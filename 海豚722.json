@@ -852,7 +852,7 @@
     {
       "name": "🐬综合直播",
       "type": 0,
-      "playerType": 2,
+      "playerType": 1,
       "ua": "okhttp",
       "url": "https://raw.githubusercontent.com/fleung49/star/refs/heads/main/mit"
     },
