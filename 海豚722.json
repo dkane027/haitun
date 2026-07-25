@@ -66,14 +66,15 @@
       "key": "片库",
       "name": "片库",
       "type": 3,
-      "api": "https://dogpan.com/f/xG5Zux/%E7%89%87%E5%BA%93.py"
+      "api": "https://dogpan.com/f/Y6BxcA/pianku.py"
     },
-    {
-      "key": "ddyy",
-      "name": "🐬低端影视.py",
+     {
+      "key": "zbhb",
+      "name": "直播合并",
       "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/py/低端影视.py"
+      "api": "https://dogpan.com/f/Z4DDtQ/zbhb.py"
     },
+    
     {
       "key": "cbh",
       "name": "🐬茶杯狐.py(关梯)",
