@@ -62,12 +62,13 @@
       "type": 3,
       "api": "https://dogpan.com/f/Bgp4C8/%E5%A4%9A%E7%91%99%E5%BD%B1%E9%99%A2.py"
     },
-     {
-      "key": "片库",
-      "name": "片库",
-      "type": 3,
-      "api": "https://dogpan.com/f/Y6BxcA/pianku.py"
-    },
+    {
+			"key": "片库",
+			"name": "🐬片库.js(关梯)",
+			"type": 3,
+			"api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/jar_js/片库.js",
+			"changeable": 0
+		},
      {
       "key": "zbhb",
       "name": "直播合并",
