@@ -75,7 +75,13 @@
       "type": 3,
       "api": "https://dogpan.com/f/48D3Ul/%E7%89%87%E5%BA%93.py"
     },
-    
+    {
+    "key": "zbhb",
+    "name": "🐬直播聚合(自带源)",
+    "type": 3,
+    "api": "https://dogpan.com/f/Z4DDtQ/zbhb.py"
+},
+
     {
       "key": "cbh",
       "name": "🐬茶杯狐.py(关梯)",
