@@ -69,20 +69,19 @@
 			"api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/jar_js/片库.js",
 			"changeable": 0
 		},
-     {
-      "key": "pianku",
-      "name": "pianku",
-      "type": 3,
-      "api": "https://dogpan.com/f/48D3Ul/%E7%89%87%E5%BA%93.py"
-    },
     {
-    "key": "zbhb",
-    "name": "🐬直播聚合(自带源)",
-    "type": 3,
-    "api": "https://dogpan.com/f/Z4DDtQ/zbhb.py"
+  "key": "py_aigua",
+  "name": "爱瓜TV(T3)",
+  "type": 3,
+  "api": "https://dogpan.com/f/xGNZFx/aigua.py",
+  "searchable": 1,
+  "quickSearch": 1,
+  "filterable": 1,
+  "order_num": 5,
+  "ext": ""
 },
 
-    {
+   {
       "key": "cbh",
       "name": "🐬茶杯狐.py(关梯)",
       "type": 3,
