@@ -59,7 +59,12 @@
   "api": "http://rihou.cc:88/js/drpy2.min.js",
   "ext": "https://raw.githubusercontent.com/stevenrop/tvbox/refs/heads/main/ppnix.js"
 },
-
+  {
+      "key": "爱一帆",
+      "name": "爱一帆",
+      "type": 3,
+      "api": "https://dogpan.com/f/vgkjIA/%E7%88%B1%E5%A3%B9%E5%B8%86.py"
+    },
    {
       "key": "独播JS",
       "name": "丨独播丨JS",
