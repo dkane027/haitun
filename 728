@@ -60,22 +60,24 @@
   "ext": "https://raw.githubusercontent.com/stevenrop/tvbox/refs/heads/main/ppnix.js"
 },
 
-    {
-      "key": "Duboku",
-      "name": "🎯┆独播┆影视",
+   {
+      "key": "独播JS",
+      "name": "丨独播丨JS",
       "type": 3,
-      "api": "csp_Duboku",
-      "searchable": 1,
-      "filterable": 1,
-      "changeable": 1
+      "api": "https://dogpan.com/f/pgPZCA/%E7%8B%AC%E6%92%AD%E5%BA%93.js"
     },
     {
-      "key": "wencai",
-      "name": "✏️┆文才┆影视",
+      "key": "文才影视",
+      "name": "文才丨影视",
       "type": 3,
-      "api": "csp_WenCai",
+      "api": "https://dogpan.com/f/oYPVUv/%E6%96%87%E6%89%8D.py",
       "searchable": 1,
-      "ext": "https://www.tjrongze.com,https://y2s52n7.com,https://m.hkybqufgh.com,https://m.sizhengxt.com,https://m.9zhoukj.com,https://m.jiabaide.cn"
+      "quickSearch": 1,
+      "filterable": 1,
+      "playerType": 2,
+      "ext": {
+        "site": "https://m.hkybqufgh.com,https://m.sizhengxt.com,https://m.9zhoukj.com,https://m.sizhengxt.com,https://m.jiabaide.cn"
+      }
     },
     {
       "key": "橘皮",
