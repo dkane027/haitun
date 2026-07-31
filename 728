@@ -52,11 +52,12 @@
         "漫剧"
       ]
     },
- {
-      "key": "nvm",
-      "name": "🐬泥视频.py",
+  {
+      "key": "泥泥视频",
+      "name": "🍋泥泥┃[秒播]",
       "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/py/泥视频.py"
+      "api": "http://rihou.cc:88/js/drpy2.min.js",
+      "ext": "http://rihou.cc:88/js/%E6%B3%A5%E6%B3%A5%E8%A7%86%E9%A2%91.js"
     },
   {
       "key": "多瑙影院",
@@ -120,11 +121,16 @@
       "timeout": 120
     },
 {
-      "key": "SZ",
-      "name": "🐬山楂影视.py(关梯)",
+      "key": "山楂",
+      "name": "👖裤佬丨山楂丨PY",
       "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/py/山楂影视.py"
+      "api": "https://dogpan.com/f/NxOrIj/山楂.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 0
     },
+    
 {
       "key": "马猴影视",
       "name": "🐵马猴[影视]",
