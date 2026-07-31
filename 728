@@ -52,6 +52,40 @@
         "漫剧"
       ]
     },
+ {
+  "key": "py_aigua",
+  "name": "爱瓜TV(T3)",
+  "type": 3,
+  "api": "https://dogpan.com/f/xGNZFx/aigua.py",
+  "searchable": 1,
+  "quickSearch": 1,
+  "filterable": 1,
+  "order_num": 5,
+  "ext": ""
+},
+{
+      "key": "观影",
+      "name": "🎬观影[4K]",
+      "type": 3,
+      "api": "csp_Gying",
+      "jar": "https://dogpan.com/f/LgR2FQ/20260730190959spider.jar",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "changeable": 0,
+      "style": {
+        "type": "rect",
+        "ratio": 0.68
+      },
+      "ext": {
+        "site": [
+          "https://www.xn--10vr61a3xc5x3b.com",
+          "https://www.xn--kivn76b41nnhi.com",
+          "https://www.xn--wcv59z.com"
+        ]
+      },
+      "timeout": 120
+    },
     {
   "key": "ppnix",
   "name": "PPnix",
