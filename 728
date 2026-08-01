@@ -53,6 +53,13 @@
       ]
     },
 {
+			"key": "IFN4K.py",
+			"name": "IFN4K.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/xGxoIx/IFN4K.py",
+			"changeable": 0
+		},
+{
 			"key": "片库",
 			"name": "🐬片库.js(关梯)",
 			"type": 3,
