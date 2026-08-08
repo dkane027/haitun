@@ -60,6 +60,13 @@
 			"changeable": 0
 		},
 {
+			"key": "4KVM.py",
+			"name": "4KVM.py",
+			"type": 3,
+			"api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/4KVM.py",
+			"changeable": 0
+		},
+{
 			"key": "片库",
 			"name": "🐬片库.js(关梯)",
 			"type": 3,
