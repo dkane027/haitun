@@ -53,10 +53,24 @@
       ]
     },
 {
+			"key": "FreeOK.py",
+			"name": "FreeOK.py",
+			"type": 3,
+			"api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/FreeOK.py",
+			"changeable": 0
+		},
+{
 			"key": "IFN4K.py",
 			"name": "IFN4K.py",
 			"type": 3,
 			"api": "https://dogpan.com/f/xGxoIx/IFN4K.py",
+			"changeable": 0
+		},
+{
+			"key": "symx.py",
+			"name": "symx.py",
+			"type": 3,
+			"api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/symx.py",
 			"changeable": 0
 		},
 {
