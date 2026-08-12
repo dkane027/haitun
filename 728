@@ -66,13 +66,17 @@
 			"api": "https://dogpan.com/f/xGxoIx/IFN4K.py",
 			"changeable": 0
 		},
-{
-			"key": "symx.py",
-			"name": "symx.py",
-			"type": 3,
-			"api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/symx.py",
-			"changeable": 0
-		},
+ {
+      "key": "CZ",
+      "name": "🏭厂长[影视]",
+      "type": 3,
+      "api": "csp_CZ",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "changeable": 1,
+      "ext": "https://cz01.vip"
+    },
 {
 			"key": "4KVM.py",
 			"name": "4KVM.py",
@@ -112,8 +116,8 @@
       "key": "泥泥视频",
       "name": "🍋泥泥┃[秒播]",
       "type": 3,
-      "api": "http://rihou.cc:88/js/drpy2.min.js",
-      "ext": "http://rihou.cc:88/js/%E6%B3%A5%E6%B3%A5%E8%A7%86%E9%A2%91.js"
+      "api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/py/%E6%B3%A5%E8%A7%86%E9%A2%91.py",
+      "changeable": 0
     },
   {
       "key": "多瑙影院",
