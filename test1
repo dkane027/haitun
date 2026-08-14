@@ -42,3 +42,222 @@
         "港台动漫",
         "海外动漫",
         "演唱会",
+        "爽文短剧",
+        "反转爽剧",
+        "古装仙侠",
+        "年代穿越",
+        "脑洞悬疑",
+        "现代都市",
+        "邵氏电影",
+        "漫剧"
+      ]
+    },
+{
+			"key": "FreeOK.py",
+			"name": "FreeOK.py",
+			"type": 3,
+			"api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/FreeOK.py",
+			"changeable": 0
+		},
+{
+			"key": "IFN4K.py",
+			"name": "IFN4K.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/xGxoIx/IFN4K.py",
+			"changeable": 0
+		},
+ {
+      "key": "CZ",
+      "name": "🏭厂长[影视]",
+      "type": 3,
+      "api": "csp_CZ",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "changeable": 1,
+      "jar": "https://img.tofaka.com/autoupload/f/v78ve/20260811/DYCa/aidaox-20260811-162723.jar",
+      "ext": "https://cz01.vip"
+    },
+{
+			"key": "4KVM.py",
+			"name": "4KVM.py",
+			"type": 3,
+			"api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/4KVM.py",
+			"changeable": 0
+		},
+{
+			"key": "片库",
+			"name": "🐬片库.js(关梯)",
+			"type": 3,
+			"api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/jar_js/片库.js",
+			"changeable": 0
+		},
+ {
+      "key": "华谊",
+      "name": "🌌华谊｜蓝光秒播",
+      "type": 3,
+      "api": "csp_AppDrama",
+      "jar": "https://github.com/dkane027/haitun/raw/refs/heads/main/9527.jar",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": {
+        "appName": "华谊",
+        "publicKey": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCp9Ek4wIlQAtwFnuBRlsFiow2tr+4UOciGeNKbY7nL74etUqUb6fvpOSOHhFEfaWlfwUpOB17x3JEL3No19nfjCeVYrYPjlJcgoqUWH/tfIfFAQWvtxBIBlKazkhw8d3ChysWmeWRikKqkBsVRY4oqNPuj4sjm6Zult0U4I4prRQIDAQAB",
+        "dataKey": "NDBYSZR1DMRRZ05NSUCWEJNIYWLBPT0=",
+        "dataIv": "OC1A06E197EF10CF3F6058CA7A803B5E",
+        "pkg": "com.muyue.tool",
+        "host": "",
+        "site": "https://vip.123pan.cn/1851089669/oss/az5.txt",
+        "version": "1.0.0.4",
+        "decrypt": "1"
+      }
+    },
+  {
+      "key": "泥泥视频",
+      "name": "🍋泥泥┃[秒播]",
+      "type": 3,
+      "api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/py/%E6%B3%A5%E8%A7%86%E9%A2%91.py",
+      "changeable": 0
+    },
+  {
+      "key": "多瑙影院",
+      "name": "多瑙影院",
+      "type": 3,
+      "api": "https://dogpan.com/f/Bgp4C8/%E5%A4%9A%E7%91%99%E5%BD%B1%E9%99%A2.py"
+    },
+{
+  "key": "py_4KAV",
+  "name": "4KAV(T3)",
+  "type": 3,
+  "api": "https://clun.top/py/4KAV.py",
+  "quickSearch": 1,
+  "searchable": 1,
+  "filterable": 1
+},
+{
+  "key": "追光影视",
+  "name": "追光影视",
+  "type": 3,
+  "api": "https://raw.githubusercontent.com/stevenrop/tvbox/refs/heads/main/%E8%BF%BD%E5%85%89%E5%BD%B1%E8%A7%86.py",
+  "quickSearch": 1,
+  "searchable": 1,
+  "filterable": 1
+},
+
+ {
+  "key": "py_aigua",
+  "name": "爱瓜TV(T3)",
+  "type": 3,
+  "api": "https://dogpan.com/f/xGNZFx/aigua.py",
+  "searchable": 1,
+  "quickSearch": 1,
+  "filterable": 1,
+  "order_num": 5,
+  "ext": ""
+},
+{
+      "key": "观影",
+      "name": "🎬观影[4K]",
+      "type": 3,
+      "api": "csp_Gying",
+      "jar": "https://dogpan.com/f/LgR2FQ/20260730190959spider.jar",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "changeable": 0,
+      "style": {
+        "type": "rect",
+        "ratio": 0.68
+      },
+      "ext": {
+        "site": [
+          "https://www.xn--10vr61a3xc5x3b.com",
+          "https://www.xn--kivn76b41nnhi.com",
+          "https://www.xn--wcv59z.com"
+        ]
+      },
+      "timeout": 120
+    },
+
+{
+      "key": "马猴影视",
+      "name": "🐵马猴[影视]",
+      "type": 3,
+      "api": "csp_AppMH",
+      "jar": "https://dogpan.com/f/LgR2FQ/20260730190959spider.jar",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 1,
+      "ext": "https://45.150.167.18:8000"
+    },
+{
+      "key": "AppV7Zjdr",
+      "name": "🎬追剧达人[影视]",
+      "type": 3,
+      "api": "csp_AppV7",
+      "jar": "https://dogpan.com/f/LgR2FQ/20260730190959spider.jar",
+      "quickSearch": 1,
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 0,
+      "ext": "AIBOX1/cXJzdHV2d3h5ent8fX5/gJSHXACxiaOhlDsHGFhMei7uBEcMV/8APssxKMcTkX2C3+yfmI5ZDE4A9o73v30sjn+L00OtCnNnZcsVcFpa3ugN6owt/zdz+eeDJnIMC9xwq8gNI1q9J1GMSfDzWNFGdsbkqEB4sgZ+mkrygmAVO2CQptqU2ziGiqXlXSBkVutpsVrLzDzZ3xczQ9aHgW61cQ=="
+    },
+ 
+  {
+      "key": "爱一帆",
+      "name": "爱一帆",
+      "type": 3,
+      "api": "https://dogpan.com/f/vgkjIA/%E7%88%B1%E5%A3%B9%E5%B8%86.py"
+    },
+   {
+      "key": "独播JS",
+      "name": "丨独播丨JS",
+      "type": 3,
+      "api": "https://dogpan.com/f/pgPZCA/%E7%8B%AC%E6%92%AD%E5%BA%93.js"
+    },
+    {
+      "key": "文才影视",
+      "name": "文才丨影视",
+      "type": 3,
+      "api": "https://dogpan.com/f/oYPVUv/%E6%96%87%E6%89%8D.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "playerType": 1,
+      "ext": {
+        "site": "https://m.hkybqufgh.com,https://m.sizhengxt.com,https://m.9zhoukj.com,https://m.sizhengxt.com,https://m.jiabaide.cn"
+      }
+    },
+    {
+      "key": "橘皮",
+      "name": "🍊┃橘皮┃影视",
+      "type": 3,
+      "api": "csp_Jpys",
+      "playerType": 1,
+      "jar": "https://ncstatic.clewm.net/rsrc/2025/0725/20/318ccef14687421637f5aa0ba1021e33.png;md5;939FFBC2941A28CA533F2653FA4B449E",
+      "ext": "7lj763gg402i7942463j9j9jh84l8798l8gli652828g332i"
+    },
+    {
+      "key": "JinPai",
+      "name": "🏅┃金牌┃影院",
+      "type": 3,
+      "api": "csp_Jinpai",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "jar": "https://ncstatic.clewm.net/rsrc/2026/0508/10/56d0b667615145949789418bff9f22a5.png;md5;B63A0EB8852BB7AB06500C424CCC3DAE"
+    },
+    {
+      "key": "Ysp",
+      "name": "🌍┆U视┆墙外",
+      "type": 3,
+      "api": "csp_YspAmns",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 0,
+      "jar": "https://dogpan.com/f/r069i2/20260729182919spider.jar"
+    }
+  ]
+}
