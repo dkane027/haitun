@@ -204,12 +204,7 @@
       "changeable": 0,
       "ext": "AIBOX1/cXJzdHV2d3h5ent8fX5/gJSHXACxiaOhlDsHGFhMei7uBEcMV/8APssxKMcTkX2C3+yfmI5ZDE4A9o73v30sjn+L00OtCnNnZcsVcFpa3ugN6owt/zdz+eeDJnIMC9xwq8gNI1q9J1GMSfDzWNFGdsbkqEB4sgZ+mkrygmAVO2CQptqU2ziGiqXlXSBkVutpsVrLzDzZ3xczQ9aHgW61cQ=="
     },
-    {
-  "key": "ppnix",
-  "name": "PPnix",
-  "type": 3,
-  "api": "https://raw.githubusercontent.com/stevenrop/tvbox/refs/heads/main/ppnix.py",
- },
+ 
   {
       "key": "爱一帆",
       "name": "爱一帆",
