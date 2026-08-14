@@ -120,6 +120,12 @@
       "api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/py/%E6%B3%A5%E8%A7%86%E9%A2%91.py",
       "changeable": 0
     },
+ {
+      "key": "ppnix",
+      "name": "ppnix",
+      "type": 3,
+      "api": "https://raw.githubusercontent.com/stevenrop/tvbox/refs/heads/main/ppnix.py"
+    },
   {
       "key": "多瑙影院",
       "name": "多瑙影院",
