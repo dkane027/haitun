@@ -93,6 +93,13 @@
 			"changeable": 0
 		},
  {
+      "key": "片库py",
+      "name": "片库py",
+      "type": 3,
+      "api": "https://dogpan.com/f/48D3Ul/%E7%89%87%E5%BA%93.py",
+      "changeable": 0
+    },
+ {
       "key": "华谊",
       "name": "🌌华谊｜蓝光秒播",
       "type": 3,
@@ -117,9 +124,10 @@
       "key": "泥泥视频",
       "name": "🍋泥泥┃[秒播]",
       "type": 3,
-      "api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/py/%E6%B3%A5%E8%A7%86%E9%A2%91.py",
+      "api": "https://dogpan.com/f/2Rmli8/%E6%B3%A5%E8%A7%86%E9%A2%91.py",
       "changeable": 0
     },
+
  {
       "key": "ppnix",
       "name": "ppnix",
