@@ -53,6 +53,20 @@
       ]
     },
 {
+			"key": "ai.py",
+			"name": "ai.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/j2mpSR/AI%E8%A7%86%E9%A2%912.py",
+			"changeable": 0
+		},
+{
+			"key": "五大.py",
+			"name": "五大.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/k5npI5/%E4%BA%94%E5%A4%A7%E5%B9%B3%E5%8F%B0.py",
+			"changeable": 0
+		},
+{
 			"key": "FreeOK.py",
 			"name": "FreeOK.py",
 			"type": 3,
