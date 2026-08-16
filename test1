@@ -52,13 +52,7 @@
         "漫剧"
       ]
     },
-{
-			"key": "ai.py",
-			"name": "ai.py",
-			"type": 3,
-			"api": "https://dogpan.com/f/j2mpSR/AI%E8%A7%86%E9%A2%912.py",
-			"changeable": 0
-		},
+
 {
 			"key": "五大.py",
 			"name": "五大.py",
