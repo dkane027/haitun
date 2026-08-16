@@ -1,0 +1,78 @@
+{
+  "spider": "https://tc-new.z.wiki/autoupload/iYHTWVx6T8RrCmqdGD6MOdiO_OyvX7mIgxFBfDMDErs/20260711/xZj2/fish07111721.jar",
+  "wallpaper": "https://bing.img.run/rand.php",
+  "playerType": 2,
+  "sites": [
+    {
+      "key": "Netflix",
+      "name": "🏰️┆4K┆奈飞",
+      "type": 1,
+      "api": "https://api.wsyzy.net/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "categories": [
+        "4K电影",
+        "Netflix电影",
+        "Netflix自制剧",
+        "动作片",
+        "喜剧片",
+        "爱情片",
+        "科幻片",
+        "恐怖片",
+        "剧情片",
+        "战争片",
+        "国产剧",
+        "欧美剧",
+        "韩剧",
+        "日剧",
+        "港剧",
+        "台剧",
+        "泰剧",
+        "海外剧",
+        "纪录片",
+        "大陆综艺",
+        "日韩综艺",
+        "港台综艺",
+        "欧美综艺",
+        "国产动漫",
+        "日韩动漫",
+        "欧美动漫",
+        "动画片",
+        "港台动漫",
+        "海外动漫",
+        "演唱会",
+        "爽文短剧",
+        "反转爽剧",
+        "古装仙侠",
+        "年代穿越",
+        "脑洞悬疑",
+        "现代都市",
+        "邵氏电影",
+        "漫剧"
+      ]
+    },
+  {
+      "key": "tangxing",
+      "name": "tangxing",
+      "type": 3,
+      "api": "https://dogpan.com/f/pgvGcA/%E7%B3%96%E5%BF%83%E6%AC%A1%E5%85%83.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 0,
+      
+    },
+
+
+    {
+      "key": "Ysp",
+      "name": "🌍┆U视┆墙外",
+      "type": 3,
+      "api": "csp_YspAmns",
+      "searchable": 1,
+      "quickSearch": 1,
+      "changeable": 0,
+      "jar": "https://dogpan.com/f/r069i2/20260729182919spider.jar"
+    }
+  ]
+}
