@@ -52,7 +52,13 @@
         "漫剧"
       ]
     },
-
+{
+			"key": "kanjuai.py",
+			"name": "kanjuai.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
+			"changeable": 0
+		},
 
 {
 			"key": "FreeOK.py",
