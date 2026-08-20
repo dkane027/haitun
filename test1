@@ -215,18 +215,7 @@
       "timeout": 120
     },
 
-{
-      "key": "马猴影视",
-      "name": "🐵马猴[影视]",
-      "type": 3,
-      "api": "csp_AppMH",
-      "jar": "https://dogpan.com/f/LgR2FQ/20260730190959spider.jar",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "changeable": 1,
-      "ext": "https://45.150.167.18:8000"
-    },
+
 {
       "key": "AppV7Zjdr",
       "name": "🎬追剧达人[影视]",
