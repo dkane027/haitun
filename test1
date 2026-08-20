@@ -59,7 +59,13 @@
 			"api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
 			"changeable": 0
 		},
-
+{
+			"key": "zlys9.py",
+			"name": "zlys9.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/mw41UW/zlys9.py",
+			"changeable": 0
+		},
 {
 			"key": "FreeOK.py",
 			"name": "FreeOK.py",
