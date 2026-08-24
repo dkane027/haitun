@@ -59,13 +59,7 @@
 			"api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
 			"changeable": 0
 		},
-{
-			"key": "sa.py",
-			"name": "sa.py",
-			"type": 3,
-			"api": "https://dogpan.com/f/JZprcK/SA%E8%A7%86%E9%A2%91.py",
-			"changeable": 0
-		},
+
 {
 			"key": "好好看.py",
 			"name": "好好看.py",
