@@ -60,6 +60,13 @@
 			"changeable": 0
 		},
 {
+			"key": "SA视频.py",
+			"name": "SA视频.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/JZprcK/SA%E8%A7%86%E9%A2%91.py",
+			"changeable": 0
+		},
+{
 			"key": "uvod.py",
 			"name": "uvod.py",
 			"type": 3,
