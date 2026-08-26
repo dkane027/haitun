@@ -59,12 +59,18 @@
 			"api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
 			"changeable": 0
 		},
-
 {
-			"key": "好好看.py",
-			"name": "好好看.py",
+			"key": "souju.py",
+			"name": "souju.py",
 			"type": 3,
-			"api": "https://dogpan.com/f/3l8zs2/%E5%A5%BD%E5%A5%BD%E7%9C%8B.py",
+			"api": "https://dogpan.com/f/GZ0EHA/souju.py",
+			"changeable": 0
+		},
+{
+			"key": "soujuai.py",
+			"name": "soujuai.py",
+			"type": 3,
+			"api": "https://dogpan.com/f/JZBrIK/soujuai.py",
 			"changeable": 0
 		},
 {
