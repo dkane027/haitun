@@ -121,18 +121,12 @@
 			"api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/4KVM.py",
 			"changeable": 0
 		},
-{
-			"key": "片库",
-			"name": "🐬片库.js(关梯)",
-			"type": 3,
-			"api": "https://ghfast.top/https://raw.githubusercontent.com/FGBLH/HKL/refs/heads/main/jar_js/片库.js",
-			"changeable": 0
-		},
+
  {
       "key": "片库py",
       "name": "片库py",
       "type": 3,
-      "api": "https://dogpan.com/f/48D3Ul/%E7%89%87%E5%BA%93.py",
+      "api": "https://dogpan.com/f/1jlvTq/pianku.py",
       "changeable": 0
     },
  {
