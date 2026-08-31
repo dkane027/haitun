@@ -231,14 +231,34 @@
   ],
   "lives": [
     {
-      "group": "直播",
-      "channels": [
-        "https://cdn.jsdelivr.net/gh/Guovin/iptv-api@gd/output/result.m3u",
-        "https://cdn.jsdelivr.net/gh/dkane027/fleung49@main/mit",
-        "https://raw.githubusercontent.com/stevenrop/live1/refs/heads/main/live.txt",
-        "https://raw.githubusercontent.com/stevenrop/live1/refs/heads/main/57.txt",
-        "https://cdn.jsdelivr.net/gh/dkane027/fleung49@main/SMART"
-      ]
+      "name": "IPTV直播",
+      "type": 0,
+      "playerType": 2,
+      "url": "https://cdn.jsdelivr.net/gh/Guovin/iptv-api@gd/output/result.m3u"
+    },
+    {
+      "name": "fleung49·mit",
+      "type": 0,
+      "playerType": 2,
+      "url": "https://cdn.jsdelivr.net/gh/dkane027/fleung49@main/mit"
+    },
+    {
+      "name": "live1·live",
+      "type": 0,
+      "playerType": 2,
+      "url": "https://raw.githubusercontent.com/stevenrop/live1/refs/heads/main/live.txt"
+    },
+    {
+      "name": "live1·57",
+      "type": 0,
+      "playerType": 2,
+      "url": "https://raw.githubusercontent.com/stevenrop/live1/refs/heads/main/57.txt"
+    },
+    {
+      "name": "fleung49·SMART",
+      "type": 0,
+      "playerType": 2,
+      "url": "https://cdn.jsdelivr.net/gh/dkane027/fleung49@main/SMART"
     }
   ]
 }
