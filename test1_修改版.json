@@ -10,6 +10,13 @@
       "api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
       "changeable": 0
     },
+      {
+      "key": "咕噜",
+      "name": "咕噜",
+      "type": 3,
+      "api": "https://dogpan.com/f/Y6g6IA/gl.py",
+      "changeable": 0
+    },
     {
       "key": "zip0.py",
       "name": "zip0.py",
