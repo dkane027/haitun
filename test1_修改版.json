@@ -45,6 +45,75 @@
       "api": "https://dogpan.com/f/1jRWhq/%E8%8D%90%E7%89%87.js",
       "changeable": 0
     },
+
+    {
+            "key": "新瓜子影视",
+            "name": "踏天苍穹4k❤️聚子",
+            "type": 3,
+            "api": "http://8.148.229.212:802/4k踏天s2/lib/云子.py",
+            "jar": "http://8.148.229.212:802/4k踏天s2/jar/yunh0716.jar",
+            "searchable": 1,
+            "quickSearch": 1,
+            "filterable": 0,
+            "加密方式": "AES-CBC + RSA-PKCS1v1.5",
+            "AES_KEY": "OITxa5OqAYjhswxx",
+            "AES_IV": "rCMNwZASNBKZ8mXV",
+            "code": "GZ0369",
+            "API域名": [
+                "https://apinew.uozvr.com",
+                "https://api.w32z7vtd.com",
+                "https://api.6a7nnf7.com",
+                "https://api.umygrx3.com",
+                "https://api.rmedphk.com"
+            ],
+            "API路径": {
+                "设备注册": "/App/Authentication/Device/signUp",
+                "设备登录": "/App/Authentication/Device/signIn",
+                "Token刷新": "/App/Authentication/Authenticator/refresh",
+                "分类列表": "/App/IndexList/indexList",
+                "影片信息": "/App/IndexPlay/playInfo",
+                "播放线路": "/App/Resource/Vurl/show",
+                "播放地址": "/App/Resource/VurlDetail/showOne",
+                "搜索": "/App/Index/findMoreVod"
+            }
+        },
+        {
+            "key": "4k-av",
+            "name": "踏天苍穹4k❤️电信",
+            "type": 3,
+            "api": "http://8.148.229.212:802/4k踏天s2/lib/21.py",
+            "searchable": 1,
+            "加密方式": "无 (网页爬虫)",
+            "目标站点": "https://4k-av.com"
+        },
+        {
+            "key": "新腾极4k",
+            "name": "踏天中原4k-双煞🔥",
+            "type": 3,
+            "api": "http://wang.qijiyun.vip/yun2k/drpy_libs/drpy2.min.js",
+            "ext": "http://8.148.229.212:802/4k踏天s2/lib/4k踏天s2TX.js"
+        },
+        {
+            "key": "真轱辘",
+            "name": "踏天苍穹4k❤️归墟",
+            "type": 3,
+            "api": "http://8.148.229.212:802/4k踏天s2/lib/咕噜.js"
+        },
+        {
+            "key": "柠檬",
+            "name": "踏天苍穹4k❤️萌",
+            "type": 3,
+            "api": "csp_Nmvod",
+            "playerType": 2,
+            "jar": "http://8.148.229.212:802/4k踏天s2/jar/柠檬.jar",
+            "ext": "7lj763gg402i7942503g839jg74h8h88highi40799jh6i6k454419l0l5184k0g549h0kg2i01i838i2h42g891lgg1"
+        },
+        {
+            "name": "测试解析",
+            "type": 1,
+            "url": "http://101.201.171.207:8686/api/?key=tlQQtzS18h1fcEEFSo&url="
+        },
+    
     {
       "key": "zip0.py",
       "name": "zip0.py",
