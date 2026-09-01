@@ -38,7 +38,13 @@
     "decrypt": "1"
   }
 },
-
+  {
+      "key": "荐片",
+      "name": "荐片",
+      "type": 3,
+      "api": "https://dogpan.com/f/1jRWhq/%E8%8D%90%E7%89%87.js",
+      "changeable": 0
+    },
     {
       "key": "zip0.py",
       "name": "zip0.py",
