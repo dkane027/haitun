@@ -17,6 +17,13 @@
       "api": "https://dogpan.com/f/Y6g6IA/gl.py",
       "changeable": 0
     },
+       {
+      "key": "橘汁",
+      "name": "橘汁",
+      "type": 3,
+      "api": "https://dogpan.com/f/Z4jVfQ/%E6%A9%98%E6%B1%81.py",
+      "changeable": 0
+    },
     {
       "key": "zip0.py",
       "name": "zip0.py",
