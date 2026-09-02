@@ -45,6 +45,20 @@
       "api": "https://dogpan.com/f/1jRWhq/%E8%8D%90%E7%89%87.js",
       "changeable": 0
     },
+{
+  "key": "SA视频",
+  "name": "🎬SA视频",
+  "type": 3,
+  "api": "https://dogpan.com/f/66Zmiy/SA.py",
+  "searchable": 1,
+  "quickSearch": 1,
+  "filterable": 1,
+  "changeable": 0,
+  "ext": {
+    "host": "https://www.lsjys11.com",
+    "page_size": 21
+  }
+},
 
     {
             "key": "新瓜子影视",
