@@ -4,11 +4,18 @@
   "playerType": 2,
   "sites": [
     {
-      "key": "kanjuai.py",
-      "name": "kanjuai.py",
+      "key": "SA视频",
+      "name": "🎬SA视频｜秒播",
       "type": 3,
-      "api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
-      "changeable": 0
+      "api": "https://dogpan.com/f/66Zmiy/SA.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 0,
+      "ext": {
+        "host": "https://www.lsjys11.com",
+        "page_size": 21
+      }
     },
     {
       "key": "咕噜",
@@ -16,6 +23,29 @@
       "type": 3,
       "api": "https://dogpan.com/f/Y6g6IA/gl.py",
       "changeable": 0
+    },
+    {
+      "key": "py_aigua",
+      "name": "爱瓜TV(T3)",
+      "type": 3,
+      "api": "https://dogpan.com/f/xGNZFx/aigua.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "order_num": 5,
+      "ext": ""
+    },
+    {
+      "key": "独播JS",
+      "name": "丨独播丨JS",
+      "type": 3,
+      "api": "https://dogpan.com/f/pgPZCA/%E7%8B%AC%E6%92%AD%E5%BA%93.js"
+    },
+    {
+      "key": "爱一帆",
+      "name": "爱一帆",
+      "type": 3,
+      "api": "https://dogpan.com/f/vgkjIA/%E7%88%B1%E5%A3%B9%E5%B8%86.py"
     },
     {
       "key": "橘汁",
@@ -120,27 +150,6 @@
       "changeable": 0
     },
     {
-      "key": "souju.py",
-      "name": "souju.py",
-      "type": 3,
-      "api": "https://dogpan.com/f/GZ0EHA/souju.py",
-      "changeable": 0
-    },
-    {
-      "key": "zhuiying.py",
-      "name": "zhuiying.py",
-      "type": 3,
-      "api": "https://dogpan.com/f/nZpVtm/zhuiying.py",
-      "changeable": 0
-    },
-    {
-      "key": "uvod.py",
-      "name": "uvod.py",
-      "type": 3,
-      "api": "https://dogpan.com/f/3lnqT2/uvod.py",
-      "changeable": 0
-    },
-    {
       "key": "FreeOK.py",
       "name": "FreeOK.py",
       "type": 3,
@@ -171,13 +180,6 @@
       "name": "4KVM.py",
       "type": 3,
       "api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/4KVM.py",
-      "changeable": 0
-    },
-    {
-      "key": "片库py",
-      "name": "片库py",
-      "type": 3,
-      "api": "https://dogpan.com/f/1jlvTq/pianku.py",
       "changeable": 0
     },
     {
@@ -221,15 +223,6 @@
       "api": "https://dogpan.com/f/Bgp4C8/%E5%A4%9A%E7%91%99%E5%BD%B1%E9%99%A2.py"
     },
     {
-      "key": "py_4KAV",
-      "name": "4KAV(T3)",
-      "type": 3,
-      "api": "https://clun.top/py/4KAV.py",
-      "quickSearch": 1,
-      "searchable": 1,
-      "filterable": 1
-    },
-    {
       "key": "追光影视",
       "name": "追光影视",
       "type": 3,
@@ -237,17 +230,6 @@
       "quickSearch": 1,
       "searchable": 1,
       "filterable": 1
-    },
-    {
-      "key": "py_aigua",
-      "name": "爱瓜TV(T3)",
-      "type": 3,
-      "api": "https://dogpan.com/f/xGNZFx/aigua.py",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "order_num": 5,
-      "ext": ""
     },
     {
       "key": "观影",
@@ -290,18 +272,6 @@
       "api": "https://dogpan.com/f/DR5vS3/juok.py"
     },
     {
-      "key": "爱一帆",
-      "name": "爱一帆",
-      "type": 3,
-      "api": "https://dogpan.com/f/vgkjIA/%E7%88%B1%E5%A3%B9%E5%B8%86.py"
-    },
-    {
-      "key": "独播JS",
-      "name": "丨独播丨JS",
-      "type": 3,
-      "api": "https://dogpan.com/f/pgPZCA/%E7%8B%AC%E6%92%AD%E5%BA%93.js"
-    },
-    {
       "key": "文才影视",
       "name": "文才丨影视",
       "type": 3,
@@ -315,12 +285,6 @@
       }
     },
     {
-      "key": "金牌py",
-      "name": "金牌py",
-      "type": 3,
-      "api": "https://dogpan.com/f/58ppF6/%E9%87%91%E7%89%8C.py"
-    },
-    {
       "key": "JinPai",
       "name": "🏅┃金牌┃影院",
       "type": 3,
@@ -331,18 +295,54 @@
       "jar": "https://ncstatic.clewm.net/rsrc/2026/0508/10/56d0b667615145949789418bff9f22a5.png;md5;B63A0EB8852BB7AB06500C424CCC3DAE"
     },
     {
-      "key": "SA视频",
-      "name": "🎬SA视频｜秒播",
+      "key": "kanjuai.py",
+      "name": "kanjuai.py",
       "type": 3,
-      "api": "https://dogpan.com/f/66Zmiy/SA.py",
-      "searchable": 1,
+      "api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
+      "changeable": 0
+    },
+    {
+      "key": "souju.py",
+      "name": "souju.py",
+      "type": 3,
+      "api": "https://dogpan.com/f/GZ0EHA/souju.py",
+      "changeable": 0
+    },
+    {
+      "key": "zhuiying.py",
+      "name": "zhuiying.py",
+      "type": 3,
+      "api": "https://dogpan.com/f/nZpVtm/zhuiying.py",
+      "changeable": 0
+    },
+    {
+      "key": "uvod.py",
+      "name": "uvod.py",
+      "type": 3,
+      "api": "https://dogpan.com/f/3lnqT2/uvod.py",
+      "changeable": 0
+    },
+    {
+      "key": "片库py",
+      "name": "片库py",
+      "type": 3,
+      "api": "https://dogpan.com/f/1jlvTq/pianku.py",
+      "changeable": 0
+    },
+    {
+      "key": "py_4KAV",
+      "name": "4KAV(T3)",
+      "type": 3,
+      "api": "https://clun.top/py/4KAV.py",
       "quickSearch": 1,
-      "filterable": 1,
-      "changeable": 0,
-      "ext": {
-        "host": "https://www.lsjys11.com",
-        "page_size": 21
-      }
+      "searchable": 1,
+      "filterable": 1
+    },
+    {
+      "key": "金牌py",
+      "name": "金牌py",
+      "type": 3,
+      "api": "https://dogpan.com/f/58ppF6/%E9%87%91%E7%89%8C.py"
     }
   ],
   "lives": [
