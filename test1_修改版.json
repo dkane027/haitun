@@ -1,6 +1,6 @@
 {
-  "spider": "https://tc-new.z.wiki/autoupload/iYHTWVx6T8RrCmqdGD6MOdiO_OyvX7mIgxFBfDMDErs/20260711/xZj2/fish07111721.jar",
-  "wallpaper": "https://bing.img.run/rand.php",
+  "spider": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/9527.jar",
+  "wallpaper": "https://api.dujin.org/bing/1920.php",
   "playerType": 2,
   "sites": [
     {
@@ -18,11 +18,25 @@
       }
     },
     {
+      "key": "yemao4k",
+      "name": "🐈夜猫4K",
+      "type": 3,
+      "api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao4k.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 0,
+      "ext": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao_library.json"
+    },
+    {
       "key": "咕噜",
       "name": "咕噜",
       "type": 3,
       "api": "https://dogpan.com/f/Y6g6IA/gl.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "py_aigua",
@@ -39,13 +53,19 @@
       "key": "独播JS",
       "name": "丨独播丨JS",
       "type": 3,
-      "api": "https://dogpan.com/f/pgPZCA/%E7%8B%AC%E6%92%AD%E5%BA%93.js"
+      "api": "https://dogpan.com/f/pgPZCA/%E7%8B%AC%E6%92%AD%E5%BA%93.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "爱一帆",
       "name": "爱一帆",
       "type": 3,
-      "api": "https://dogpan.com/f/vgkjIA/%E7%88%B1%E5%A3%B9%E5%B8%86.py"
+      "api": "https://dogpan.com/f/vgkjIA/%E7%88%B1%E5%A3%B9%E5%B8%86.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "橘汁",
@@ -73,60 +93,51 @@
       "name": "荐片",
       "type": 3,
       "api": "https://dogpan.com/f/1jRWhq/%E8%8D%90%E7%89%87.js",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "新瓜子影视",
       "name": "踏天苍穹4k❤️聚子",
       "type": 3,
-      "api": "http://8.148.229.212:802/4k踏天s2/lib/云子.py",
-      "jar": "http://8.148.229.212:802/4k踏天s2/jar/yunh0716.jar",
+      "api": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/%E4%BA%91%E5%AD%90.py",
+      "jar": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/jar/yunh0716.jar",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "加密方式": "AES-CBC + RSA-PKCS1v1.5",
       "AES_KEY": "OITxa5OqAYjhswxx",
       "AES_IV": "rCMNwZASNBKZ8mXV",
-      "code": "GZ0369",
-      "API域名": [
-        "https://apinew.uozvr.com",
-        "https://api.w32z7vtd.com",
-        "https://api.6a7nnf7.com",
-        "https://api.umygrx3.com",
-        "https://api.rmedphk.com"
-      ],
-      "API路径": {
-        "设备注册": "/App/Authentication/Device/signUp",
-        "设备登录": "/App/Authentication/Device/signIn",
-        "Token刷新": "/App/Authentication/Authenticator/refresh",
-        "分类列表": "/App/IndexList/indexList",
-        "影片信息": "/App/IndexPlay/playInfo",
-        "播放线路": "/App/Resource/Vurl/show",
-        "播放地址": "/App/Resource/VurlDetail/showOne",
-        "搜索": "/App/Index/findMoreVod"
-      }
+      "code": "GZ0369"
     },
     {
       "key": "4k-av",
       "name": "踏天苍穹4k❤️电信",
       "type": 3,
-      "api": "http://8.148.229.212:802/4k踏天s2/lib/21.py",
+      "api": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/21.py",
       "searchable": 1,
-      "加密方式": "无 (网页爬虫)",
-      "目标站点": "https://4k-av.com"
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "新腾极4k",
       "name": "踏天中原4k-双煞🔥",
       "type": 3,
       "api": "http://wang.qijiyun.vip/yun2k/drpy_libs/drpy2.min.js",
-      "ext": "http://8.148.229.212:802/4k踏天s2/lib/4k踏天s2TX.js"
+      "ext": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/4k%E8%B8%8F%E5%A4%A9s2TX.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "真轱辘",
       "name": "踏天苍穹4k❤️归墟",
       "type": 3,
-      "api": "http://8.148.229.212:802/4k踏天s2/lib/咕噜.js"
+      "api": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/%E5%92%95%E5%99%9C.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "柠檬",
@@ -134,34 +145,41 @@
       "type": 3,
       "api": "csp_Nmvod",
       "playerType": 2,
-      "jar": "http://8.148.229.212:802/4k踏天s2/jar/柠檬.jar",
-      "ext": "7lj763gg402i7942503g839jg74h8h88highi40799jh6i6k454419l0l5184k0g549h0kg2i01i838i2h42g891lgg1"
-    },
-    {
-      "name": "测试解析",
-      "type": 1,
-      "url": "http://101.201.171.207:8686/api/?key=tlQQtzS18h1fcEEFSo&url="
+      "jar": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/jar/%E6%9F%A0%E6%AA%AC.jar",
+      "ext": "7lj763gg402i7942503g839jg74h8h88highi40799jh6i6k454419l0l5184k0g549h0kg2i01i838i2h42g891lgg1",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "zip0.py",
       "name": "zip0.py",
       "type": 3,
       "api": "https://dogpan.com/f/oYq0sv/zip0.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "FreeOK.py",
       "name": "FreeOK.py",
       "type": 3,
       "api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/FreeOK.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "IFN4K.py",
       "name": "IFN4K.py",
       "type": 3,
       "api": "https://dogpan.com/f/xGxoIx/IFN4K.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "CZ",
@@ -180,14 +198,17 @@
       "name": "4KVM.py",
       "type": 3,
       "api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/4KVM.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "华谊",
       "name": "🌌华谊｜蓝光秒播",
       "type": 3,
       "api": "csp_AppDrama",
-      "jar": "https://github.com/dkane027/haitun/raw/refs/heads/main/9527.jar",
+      "jar": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/9527.jar",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
@@ -208,19 +229,28 @@
       "name": "🍋泥泥┃[秒播]",
       "type": 3,
       "api": "https://dogpan.com/f/2Rmli8/%E6%B3%A5%E8%A7%86%E9%A2%91.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "ppnix",
       "name": "ppnix",
       "type": 3,
-      "api": "https://dogpan.com/f/NxmWFj/ppnix.py"
+      "api": "https://dogpan.com/f/NxmWFj/ppnix.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "多瑙影院",
       "name": "多瑙影院",
       "type": 3,
-      "api": "https://dogpan.com/f/Bgp4C8/%E5%A4%9A%E7%91%99%E5%BD%B1%E9%99%A2.py"
+      "api": "https://dogpan.com/f/Bgp4C8/%E5%A4%9A%E7%91%99%E5%BD%B1%E9%99%A2.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "追光影视",
@@ -255,16 +285,13 @@
       "timeout": 120
     },
     {
-       "key": "夜猫",
-      "name": "夜猫",
-      "type": 3,
-      "api": "https://dogpan.com/f/y8VXtL/%E5%A4%9C%E7%8C%AB4K.py"
-    },
-    {
       "key": "剧ok",
       "name": "剧ok",
       "type": 3,
-      "api": "https://dogpan.com/f/DR5vS3/juok.py"
+      "api": "https://dogpan.com/f/DR5vS3/juok.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "文才影视",
@@ -294,35 +321,50 @@
       "name": "kanjuai.py",
       "type": 3,
       "api": "https://dogpan.com/f/r0xyS2/kanjuai.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "souju.py",
       "name": "souju.py",
       "type": 3,
       "api": "https://dogpan.com/f/GZ0EHA/souju.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "zhuiying.py",
       "name": "zhuiying.py",
       "type": 3,
       "api": "https://dogpan.com/f/nZpVtm/zhuiying.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "uvod.py",
       "name": "uvod.py",
       "type": 3,
       "api": "https://dogpan.com/f/3lnqT2/uvod.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "片库py",
       "name": "片库py",
       "type": 3,
       "api": "https://dogpan.com/f/1jlvTq/pianku.py",
-      "changeable": 0
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "py_4KAV",
@@ -337,7 +379,10 @@
       "key": "金牌py",
       "name": "金牌py",
       "type": 3,
-      "api": "https://dogpan.com/f/58ppF6/%E9%87%91%E7%89%8C.py"
+      "api": "https://dogpan.com/f/58ppF6/%E9%87%91%E7%89%8C.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     }
   ],
   "lives": [
@@ -371,5 +416,125 @@
       "playerType": 2,
       "url": "https://cdn.jsdelivr.net/gh/dkane027/fleung49@main/SMART"
     }
-  ]
+  ],
+  "warningText": "本配置仅供学习交流，请勿用于商业用途。",
+  "parses": [
+    {
+      "name": "虾米",
+      "type": 0,
+      "url": "https://jx.xmflv.com/?url=",
+      "ext": {
+        "flag": [
+          "youku",
+          "qq",
+          "iqiyi",
+          "qiyi",
+          "letv",
+          "sohu",
+          "tudou",
+          "pptv",
+          "mgtv",
+          "wasu",
+          "bilibili",
+          "renrenmi"
+        ],
+        "header": {
+          "User-Agent": "Mozilla/5.0"
+        }
+      }
+    },
+    {
+      "name": "PlayerJY",
+      "type": 0,
+      "url": "https://jx.playerjy.com/?url=",
+      "ext": {
+        "flag": [
+          "youku",
+          "qq",
+          "iqiyi",
+          "qiyi",
+          "letv",
+          "sohu",
+          "tudou",
+          "pptv",
+          "mgtv",
+          "wasu",
+          "bilibili",
+          "renrenmi"
+        ],
+        "header": {
+          "User-Agent": "Mozilla/5.0"
+        }
+      }
+    },
+    {
+      "name": "yparse",
+      "type": 0,
+      "url": "https://jx.yparse.com/index.php?url=",
+      "ext": {
+        "flag": [
+          "youku",
+          "qq",
+          "iqiyi",
+          "qiyi",
+          "letv",
+          "sohu",
+          "tudou",
+          "pptv",
+          "mgtv",
+          "wasu",
+          "bilibili",
+          "renrenmi"
+        ],
+        "header": {
+          "User-Agent": "Mozilla/5.0"
+        }
+      }
+    },
+    {
+      "name": "8090g",
+      "type": 0,
+      "url": "https://www.8090g.cn/?url=",
+      "ext": {
+        "flag": [
+          "youku",
+          "qq",
+          "iqiyi",
+          "qiyi",
+          "letv",
+          "sohu",
+          "tudou",
+          "pptv",
+          "mgtv",
+          "wasu",
+          "bilibili",
+          "renrenmi"
+        ],
+        "header": {
+          "User-Agent": "Mozilla/5.0"
+        }
+      }
+    },
+    {
+      "name": "觅知(json)",
+      "type": 1,
+      "url": "http://101.201.171.207:8686/api/?key=tlQQtzS18h1fcEEFSo&url="
+    }
+  ],
+  "flags": [
+    "youku",
+    "qq",
+    "iqiyi",
+    "qiyi",
+    "letv",
+    "sohu",
+    "tudou",
+    "pptv",
+    "mgtv",
+    "wasu",
+    "bilibili",
+    "renrenmi"
+  ],
+  "ijk": [],
+  "ads": []
 }
