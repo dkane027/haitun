@@ -1,33 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-夜猫4K TVBox / 影视仓 点播源 (T5 python edition, 只依赖标准库)
-==============================================================
-真正的在线版: 主数据源 = 神马(smyyds)家族正式接口 (与夜猫4K App 完全同源)
-  - 内容: xcms.zxyy123.top   (全站 12 万+ 条, list/detail/flitter 实时同步)
-  - 解析: mf.smyyds.xyz      (注册设备→token→/Client/ 解析出 m3u8 直链)
-兜底数据源 = rrmj 官方 API (人人, 外剧分类线)
-================  神马链 (本次抓包逆向, 全链路实测通过)  ================
-POST http://xcms.zxyy123.top//api.php/smtv/vod/?ac=list&class={cls}&page={n}
-  可选: &year= &sort=Hotdesc/updatedesc &type= &area=
-  分类: tvplay 电视剧 / tvshow 综艺 / dongman 动漫 / jilupian 纪录片 /
-        dianying 电影(?) / 外据 外剧(人人,9582条) / ...
-  响应: 明文 JSON 或 base64 → RC4(b64decode, MD5D) 解密
-  flitter: ac=flitter&class={cls} → 类型/年份/地区筛选条件
-POST ac=detail&ids={vid} → 明文 JSON (title/intro/actor/area/type/video_list[])
-  video_list[].name = 线路名("极速丨奇"等), list[].url = 爱奇艺/腾讯/芒果网页 或 co_xxx
-登录: POST mf.smyyds.xyz//api.php?app=1&act=user_reg + user_logon → {"token":...}
-  data=RC4(plain, RC4KEY).hex (注意顺序: rc4(明文,key)); sign=md5(plain+"&"+SALT)
-播放: GET mf.smyyds.xyz/Client/?url={网页或co_}&account={m}&token={token}&line={line}
-  line=co(内链)/qq(爱奇艺)/mgtv(芒果)/rrmj(人人)...
-  → {"code":200,"data":{"url":"https://cibn-edge-5g.1ljx.com/cloud/flv/...m3u8"}}
-================  rrmj 在线链 (外剧兜底)  ================
-搜索:  GET /search/comprehensive/precise-mixed?keywords={kw}&size=20 (fuzzySeasonList)
-详情:  GET /drama/detail?dramaId={id}&isAgeLimit=0 → episodeList[].sid
-播放:  GET /drama/detail?dramaId={id}&isAgeLimit=0&episodeSid={sid}
-       → data.watchInfo.m3u8.url = 明文 mp4 直链
-签名:  Base64(HmacSHA256("GET\\naliId:{did}\\nct:android\\ncv:5.27.7\\nt:{ms}\\n{url_sorted}",
-                        "ES513W0B1CsdUrR13Qk5EgDAKPeeKZY"))
-"""
+# 夜猫4K TVBox 点播源 (T5) - 纯在线版
+# 主数据源: 神马(smyyds) 官方接口, 与夜猫4K App 同源, 内容实时同步
+# 内容: xcms.zxyy123.top; 解析: mf.smyyds.xyz; 外剧/搜索: 人人视频 rrmj API
 import sys, os, json, time, random, hashlib, urllib.request, urllib.parse, ssl
 import base64
 import hmac
@@ -144,7 +118,7 @@ _direct_opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 # ============================== 基础工具 ==============================
 def rc4(data, key):
-    """标准 RC4 —— 注意参数顺序: rc4(明文, key)! data 在前 key 在后"""
+    # 标准 RC4 - 注意参数顺序: rc4(明文, key), data 在前 key 在后
     if isinstance(key, str):
         key = key.encode()
     S = list(range(256))
@@ -170,7 +144,7 @@ def jloads(raw):
     if not raw:
         return None
     s = raw.decode("utf-8", "replace") if isinstance(raw, bytes) else raw
-    cands = [i for i in (s.find("{"), s.find("[")) if i >= 0]
+    cands = [i for i in (s.find(chr(123)), s.find("[")) if i >= 0]
     if not cands:
         return None
     try:
@@ -218,7 +192,7 @@ def cms_call(query, timeout=25, retry=2):
             continue
         txt = raw.decode("utf-8", "replace").strip()
         try:
-            if txt[:1] in ("{", "["):
+            if txt[:1] in (chr(123), "["):
                 return jloads(txt)
             j = jloads(rc4(base64.b64decode(txt), MD5D).decode("utf-8", "replace"))
             return j
@@ -250,7 +224,7 @@ def xcms_detail(vid):
 
 
 def _xcms_vod(it):
-    """list 条目 -> vod"""
+    # list 条目 -> vod
     vid = it.get("vod_id")
     if not vid:
         return None
@@ -282,7 +256,7 @@ def mf_dec_msg(msg):
 
 
 def get_mf_token():
-    """注册匿名设备 -> 登录取 token (进程内缓存)"""
+    # 注册匿名设备 -> 登录取 token (进程内缓存)
     global _machine, _token
     if _token:
         return _token
@@ -302,7 +276,7 @@ def get_mf_token():
 
 
 def mf_resolve(u, line, vodname=""):
-    """mf /Client/ 解析真实播放地址 (网页地址或 co_ 内链)"""
+    # mf Client 解析真实播放地址 (网页地址或 co_ 内链)
     tk = get_mf_token()
     if not tk:
         return ""
@@ -372,7 +346,7 @@ def rr_search(kw, size=20):
 
 
 def rr_detail_vod(vid):
-    """rrmj 详情 -> (drama_id, title, eps)"""
+    # rrmj 详情 -> (drama_id, title, eps)
     d = rr_get("/drama/detail", {"dramaId": vid, "isAgeLimit": "0"})
     if not isinstance(d, dict):
         return None
@@ -402,8 +376,10 @@ def rr_play(drama_id, episode_sid):
     return last
 
 
-# ============================== 离线片库 (最终兜底) ==============================
+# ============================== 离线片库 (可选兜底) ==============================
+# 仅当 config 里显式配置了 ext 时才加载离线库; 不配置则完全在线 (无任何多余请求)。
 _library = []
+_lib_loaded = False
 LIB_URLS = [
     "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao_library.json",
 ]
@@ -419,15 +395,18 @@ def _norm(v):
 
 
 def load_library(src):
-    global _library
+    # ext 显式传入才加载; 否则纯在线模式
+    global _library, _lib_loaded
     src = (src or "").strip()
-    if src[:1] in ("[", "{"):
+    if not src:
+        return False
+    if src[:1] in ("[", chr(123)):
         d = jloads(src.encode("utf-8", "replace"))
         if isinstance(d, list) and d:
             _library = [_norm(v) for v in d if v.get("id")]
+            _lib_loaded = True
             return True
-    cands = [s.strip() for s in src.split(";") if s.strip()] if src else []
-    cands += ["yemao_library.json", "library.json"] + LIB_URLS
+    cands = [s.strip() for s in src.split(";") if s.strip()]
     for c in cands:
         raw = b""
         try:
@@ -442,6 +421,7 @@ def load_library(src):
         d = jloads(raw)
         if isinstance(d, list) and d:
             _library = [_norm(v) for v in d if v.get("id")]
+            _lib_loaded = True
             return True
     return False
 
@@ -454,7 +434,7 @@ def _lib_vod(v):
 
 
 def build_filters():
-    """按 xcms flitter 动态生成筛选项 (年份, 全部类别共用)"""
+    # 按 xcms flitter 动态生成筛选项 (年份)
     out = {}
     try:
         j = cms_call("ac=flitter&class=tvplay")
@@ -484,7 +464,8 @@ class Spider(Spider):
     def init(self, extend=""):
         if isinstance(extend, dict):
             extend = extend.get("lib") or extend.get("site") or ""
-        load_library(extend or "")
+        if extend:
+            load_library(extend)
         return ""
 
     def isVideoFormat(self, url):
@@ -572,7 +553,7 @@ class Spider(Spider):
                 u = e.get("url") or ""
                 if not u:
                     continue
-                # 外剧(rrmj网页 m.yichengwlkj.com/drama/{did}?episodeNo={n}) -> 走 rrmj 直链
+                # 外剧(rrmj网页 m.yichengwlkj.com/drama/did?episodeNo=n) -> 走 rrmj 直链
                 mj = re.search(r"/drama/(\d+)(?:\?[^ ]*episodeNo=(\d+))?", u)
                 if mj and ("yichengwlkj" in u or "rrmj" in u):
                     did = mj.group(1)
@@ -656,7 +637,7 @@ class Spider(Spider):
     # ---------------- 播放 ----------------
     def playerContent(self, flag, id, vipFlags):
         pid = str(id or "")
-        # 外剧 rrmj 直链: xrr_{did}_{episodeNo}
+        # 外剧 rrmj 直链: xrr_did_episodeNo
         if pid.startswith("xrr_"):
             parts = pid[len("xrr_"):].split("_")
             if len(parts) >= 2:
@@ -673,7 +654,7 @@ class Spider(Spider):
                         return {"parse": 0, "playUrl": "", "url": url,
                                 "header": {"User-Agent": UA}}
             return {"parse": 0, "playUrl": "", "url": "", "header": {}}
-        # 神马: xmp_{vid}_{quote(url)}
+        # 神马: xmp_vid_quote(url)
         if pid.startswith("xmp_"):
             parts = pid[len("xmp_"):].split("_", 1)
             if len(parts) == 2:
@@ -684,7 +665,7 @@ class Spider(Spider):
                     return {"parse": 0, "playUrl": "", "url": url,
                             "header": {"User-Agent": UA}}
             return {"parse": 0, "playUrl": "", "url": "", "header": {}}
-        # rrmj: rrplay_{did}_{sid}
+        # rrmj: rrplay_did_sid
         if pid.startswith("rrplay_"):
             parts = pid[len("rrplay_"):].split("_")
             if len(parts) >= 2:
