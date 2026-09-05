@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-夜猫4K TVBox / 影视仓 点播源 (T3 python edition, 只依赖标准库)
-================================================================
-修复要点 (相对旧版):
-  1. RC4 参数顺序修正: rc4(key, data)  —— 旧版写反了, 导致 sign/data 全部失败
-  2. 登录前先 user_reg 注册设备账号 (旧版直接 logon -> 122 账号不存在)
-  3. detail 响应尾部有垃圾字节, 用 raw_decode 容错解析 (旧版 json.loads 直接抛错)
-  4. 片库自带 yemao_library.json (在线抓取快照), 支持 extend 传 URL 覆盖
-  5. 播放地址失效自动换线路重试; 过滤 diaoxian.m3u8 占位
-  6. 搜索走库内 + 相关推荐补充; 补齐 T3 必需接口
+夜猫4K TVBox / 影视仓 点播源 (T4 python edition, 只依赖标准库)
+==============================================================
+在线版: 主数据源 = 人人视频 (rrmj) 官方 API (签名直连, 内容与 App 实时同步)
+        兜底数据源 = smyyds 离线片库 (yemao_library.json)
+================  rrmj 在线链 (已全链路验证)  ================
+签名: Base64(HmacSHA256("GET\\naliId:{did}\\nct:android\\ncv:5.27.7\\nt:{ms}\\n{url_sorted}",
+                        "ES513W0B1CsdUrR13Qk5EgDAKPeeKZY"))
+首页:  GET /m-station/app/page           → sections[].sectionContents[] (全站热播/新剧/电影)
+榜单:  GET /m-station/top/drama/list?topId={id}&pageNum={n}&pageSize={s}  (60个榜单, 每榜50条)
+搜索:  GET /search/comprehensive/precise-mixed?keywords={kw}&size=20     (fuzzySeasonList)
+详情:  GET /drama/detail?dramaId={id}&isAgeLimit=0          → dramaInfo + episodeList[].sid
+播放:  GET /drama/detail?dramaId={id}&isAgeLimit=0&episodeSid={sid}
+        → data.watchInfo.m3u8.url = 明文 mp4 CDN 直链 (免解密, Range 206 验证通过)
+免费权限: SD(高清) 可播; HD(超清)/AI_OD(4K/AI原画) 需 VIP
 
 用法: config.json 里
   {"key":"yemao4k","name":"夜猫4K","type":3,
@@ -16,6 +21,10 @@
    "ext":"<yemao_library.json URL>"}
 """
 import sys, os, json, time, random, hashlib, urllib.request, urllib.parse, ssl
+import base64
+import hmac
+import threading
+import gzip
 
 sys.path.append('..')
 try:
@@ -25,22 +34,67 @@ except ImportError:
         def init(self, extend=""):
             pass
 
-VERSION = "2026-09-04b"
+VERSION = "2026-09-06a"
 
+# ============================== rrmj 在线链 ==============================
+RR_BASE = "https://api.rrmj.plus"
+RR_SECRET = "ES513W0B1CsdUrR13Qk5EgDAKPeeKZY"
+RR_CV = "5.27.7"          # android 白名单版本 (来自官方 package-url APK 文件名)
+RR_CT = "android"
+RR_UA = ("Dalvik/2.1.0 (Linux; U; Android 12; S905L3A Build/STTC.220815.001)")
+WEB_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+          "(KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+
+# 榜单 topId 映射 (来自 /m-station/top/home containerList)
+# 分类设计: 榜单 tab 呈现, 每个含子筛选 (全部/电影/美剧/韩剧/日剧/英剧/泰剧)
+RANKS = [
+    {"type_id": "rank_9",  "type_name": "热播榜"},
+    {"type_id": "rank_1",  "type_name": "高分榜"},
+    {"type_id": "rank_156", "type_name": "热搜榜"},
+    {"type_id": "rank_213", "type_name": "飙升榜"},
+    {"type_id": "rank_278", "type_name": "经典榜"},
+    {"type_id": "rank_254", "type_name": "期待榜"},
+    {"type_id": "rank_220", "type_name": "冷门佳作"},
+    {"type_id": "rank_313", "type_name": "短剧榜"},
+]
+# 榜单子分类 (全部/电影/美剧/韩剧/日剧/英剧/泰剧) —— topId 由 榜单基id+偏移 计算
+# 实测各榜子分类 topId (top/home 已枚举全部): 直接用完整映射表
+RANK_SUBS = {
+    # 高分榜: 1 全部, 3 日剧, 4 韩剧, 5 电影, 7 英剧, 8 美剧
+    "rank_1":   [("全部", 1), ("日剧", 3), ("韩剧", 4), ("电影", 5), ("英剧", 7), ("美剧", 8)],
+    # 热播榜: 9 全部, 11 日剧, 12 韩剧, 13 电影, 14 泰剧, 15 英剧, 16 美剧
+    "rank_9":   [("全部", 9), ("日剧", 11), ("韩剧", 12), ("电影", 13), ("泰剧", 14), ("英剧", 15), ("美剧", 16)],
+    # 热搜榜: 156 全部, 157 美剧, 158 韩剧, 159 日剧, 160 泰剧, 161 英剧, 169 电影
+    "rank_156": [("全部", 156), ("美剧", 157), ("韩剧", 158), ("日剧", 159), ("泰剧", 160), ("英剧", 161), ("电影", 169)],
+    # 飙升榜: 213 全部, 214 电影, 215 美剧, 216 韩剧, 217 泰剧, 218 日剧, 219 英剧
+    "rank_213": [("全部", 213), ("电影", 214), ("美剧", 215), ("韩剧", 216), ("泰剧", 217), ("日剧", 218), ("英剧", 219)],
+    # 冷门佳作榜: 220 全部, 221 美剧, 222 电影, 223 韩剧, 224 日剧, 226 英剧
+    "rank_220": [("全部", 220), ("美剧", 221), ("电影", 222), ("韩剧", 223), ("日剧", 224), ("英剧", 226)],
+    # 经典榜: 278 全部, 279 美剧, 280 电影, 281 韩剧, 282 日剧, 283 泰剧, 284 英剧
+    "rank_278": [("全部", 278), ("美剧", 279), ("电影", 280), ("韩剧", 281), ("日剧", 282), ("泰剧", 283), ("英剧", 284)],
+    # 期待榜: 254 全部, 255 电影, 256 日剧, 257 韩剧, 258 美剧, 259 泰剧
+    "rank_254": [("全部", 254), ("电影", 255), ("日剧", 256), ("韩剧", 257), ("美剧", 258), ("泰剧", 259)],
+    # 短剧榜: 313 总榜, 314 真人, 315 AI短剧, 316 漫剧
+    "rank_313": [("总榜", 313), ("真人", 314), ("AI短剧", 315), ("漫剧", 316)],
+}
+# 季度榜合并进期待榜后面, 不单列 (避免分类过多)
+
+# rrmj dramaType -> 展示名
+DRAMA_TYPE_NAME = {"TV": "电视剧", "MOVIE": "电影", "PLAYLET": "短剧", "COMIC": "漫剧",
+                   "VARIETY": "综艺", "DOCUMENTARY": "纪录片"}
+
+# ============================== smyyds 离线链 ==============================
 HOST_MF = "mf.smyyds.xyz"
 HOST_CMS = "cms.dayuys.icu"
 SALT = "d7563df33d41407f970361f176aece3b"
 RC4KEY = b"GN8ZGa4DmaHQrHhSTyQ3FwnhCQt68EXQ"
 SMTV_DATA = "BG74O4gb2o4IxUXd5CCxllMV45eRMjPCnde3EEirPTzoJh1spv20WeUrfy8NYdYr"
-SMTV_SIGN = "cjJ1cjJjclZVVGN3ZlNXSg==\n"
+SMTV_SIGN = "cjJ1cjJjclZVVGx3ZlNXSg==\n"
 AUTH = "Basic c2hlbm1hOnNoZW5tYQ=="
-UA = "Dalvik/2.1.0 (Linux; U; Android 12; S905L3A Build/STTC.220815.001)"
-WEB_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-          "(KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36")
+UA = RR_UA
 BAD_URLS = ("baidu.com/diaoxian", "diaoxian.m3u8")
 
 # 部分条目的播放地址不是内部 co_ id, 而是各大站的网页地址 -> 必须交给 TVBox 的 parses 解析。
-# from(线路名) 必须等于标准 flag, TVBox 才会去匹配 parses。
 VIP_HOSTS = (("youku.com", "youku"), ("v.qq.com", "qq"), ("iqiyi.com", "iqiyi"),
              ("mgtv.com", "mgtv"), ("bilibili.com", "bilibili"), ("le.com", "letv"),
              ("sohu.com", "sohu"), ("tudou.com", "tudou"), ("pptv.com", "pptv"),
@@ -56,7 +110,37 @@ def vip_flag(u):
             return f
     return ""
 
-CLASSES = [
+
+# 分类启发式 (离线库)
+_KID = ("少儿", "0-3岁", "4-6岁", "7-10岁", "11-14岁", "早教", "儿歌", "亲子")
+_DOC = ("纪录", "记录片", "纪实")
+_CARTOON = ("动漫", "动画", "国漫", "日漫", "番剧")
+_VARIETY = ("综艺", "真人秀", "脱口秀", "选秀", "访谈", "晚会")
+_CN_AREA = ("内地", "大陆", "中国", "国产", "中国大陆", "香港", "台湾", "澳门",
+            "中国香港", "中国台湾")
+
+
+def classify(j):
+    ty = ",".join(j.get("type") or [])
+    area = ",".join(j.get("area") or [])
+    try:
+        ep = int(j.get("cur_episode") or 1)
+    except Exception:
+        ep = 1
+    if any(k in ty for k in _KID):
+        return "SHAOER"
+    if any(k in ty for k in _DOC):
+        return "JILUPIAN"
+    if any(k in ty for k in _CARTOON):
+        return "DONGMAN"
+    if any(k in ty for k in _VARIETY):
+        return "ZONGYI"
+    if ep > 1:
+        return "DIANSHIJU" if (any(k in area for k in _CN_AREA) or "国产" in ty) else "WAIJU"
+    return "DIANYING"
+
+
+OFF_CLASSES = [
     {"type_id": "DIANYING", "type_name": "电影"},
     {"type_id": "DIANSHIJU", "type_name": "电视剧"},
     {"type_id": "ZONGYI", "type_name": "综艺"},
@@ -71,9 +155,9 @@ _ctx.check_hostname = False
 _ctx.verify_mode = ssl.CERT_NONE
 
 
-# ---------------- 基础工具 ----------------
+# ============================== 基础工具 ==============================
 def rc4(key, data):
-    """标准 RC4: 注意 key 在前, data 在后"""
+    """标准 RC4: key 在前, data 在后"""
     S = list(range(256))
     j = 0
     for i in range(256):
@@ -93,33 +177,71 @@ def _hexid(n):
     return "".join(random.choice("0123456789abcdef") for _ in range(n))
 
 
-def http_raw(url, data=None, headers=None, timeout=20):
-    """优先用宿主环境的 requests (T3 py 环境自带), 不可用时退回标准库 urllib"""
+# 系统代理往往会阻断 rrtv CDN —— 统一绕过代理直连
+_direct_opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
+
+def http_raw(url, data=None, headers=None, timeout=20, direct=False):
+    """GET/POST; direct=True 绕过系统代理 (rrmj 域名在系统代理下常 502/超时)"""
     hdr = {"User-Agent": UA}
     if headers:
         hdr.update(headers)
+    op = _direct_opener if direct else None
+
+    def _do():
+        req = urllib.request.Request(url, data=data, headers=hdr)
+        if op is not None:
+            return op.open(req, timeout=timeout).read()
+        return urllib.request.urlopen(req, timeout=timeout, context=_ctx).read()
+
     try:
         import requests
         r = requests.request("POST" if data else "GET", url, data=data,
-                             headers=hdr, timeout=timeout, verify=False)
+                             headers=hdr, timeout=timeout, verify=False,
+                             proxies={"http": None, "https": None} if direct else None)
         return r.content
     except ImportError:
         pass
     except Exception:
         return b""
-    req = urllib.request.Request(url, data=data, headers=hdr)
     try:
-        with urllib.request.urlopen(req, timeout=timeout, context=_ctx) as r:
-            return r.read()
+        return _do()
     except Exception:
         return b""
 
 
+def _http_direct(url, headers=None, timeout=20):
+    """直连 GET, 自动解压 gzip, 返回 (status, bytes)"""
+    hdr = {"User-Agent": UA, "Accept": "application/json, text/plain, */*",
+           "Accept-Encoding": "gzip"}
+    if headers:
+        hdr.update(headers)
+    req = urllib.request.Request(url, headers=hdr)
+    try:
+        with _direct_opener.open(req, timeout=timeout) as r:
+            raw = r.read()
+            if r.headers.get("Content-Encoding") == "gzip":
+                try:
+                    raw = gzip.decompress(raw)
+                except Exception:
+                    pass
+            return r.status, raw
+    except urllib.error.HTTPError as e:
+        raw = e.read()
+        if e.headers and e.headers.get("Content-Encoding") == "gzip":
+            try:
+                raw = gzip.decompress(raw)
+            except Exception:
+                pass
+        return e.code, raw
+    except Exception:
+        return -1, b""
+
+
 def jloads(raw):
-    """服务器响应尾部可能带垃圾字节, 用 raw_decode 从最早的 { 或 [ 开始容错解析"""
     if not raw:
         return None
-    s = raw.decode("utf-8", "replace")
+    s = raw.decode("utf-8", "replace") if isinstance(raw, bytes) else raw
     cands = [i for i in (s.find("{"), s.find("[")) if i >= 0]
     if not cands:
         return None
@@ -129,14 +251,214 @@ def jloads(raw):
         return None
 
 
-def post_form(host, path, fields, scheme="http"):
+def post_form(host, path, fields, scheme="http", timeout=20):
     body = urllib.parse.urlencode(fields) + "&"
     return http_raw(scheme + "://" + host + path, data=body.encode(),
                     headers={"Authorization": AUTH,
-                             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"})
+                             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+                    timeout=timeout)
 
 
-# ---------------- 登录 (mf 主机) ----------------
+# ============================== rrmj 签名请求 ==============================
+_RR_DID = _hexid(16)
+
+
+def rr_sign(path, params, ct=RR_CT, cv=RR_CV):
+    """构造签名 headers (GET)"""
+    t = int(time.time() * 1000)
+    qs = urllib.parse.urlencode(sorted(params.items()))
+    full_url = RR_BASE + path + "?" + qs
+    msg = "GET\naliId:%s\nct:%s\ncv:%s\nt:%d\n%s" % (_RR_DID, ct, cv, t, full_url)
+    sign = base64.b64encode(
+        hmac.new(RR_SECRET.encode(), msg.encode(), hashlib.sha256).digest()).decode()
+    return full_url, {
+        "token": "", "clientVersion": cv, "clientType": ct, "cv": cv, "ct": ct,
+        "deviceId": _RR_DID, "umid": _RR_DID, "aliId": _RR_DID, "uet": "9",
+        "x-ca-sign": sign, "t": str(t), "User-Agent": RR_UA,
+    }
+
+
+def rr_get(path, params, timeout=15, retry=2):
+    """rrmj 签名 GET -> data (dict/list) or None"""
+    for _ in range(max(1, retry)):
+        url, headers = rr_sign(path, params)
+        st, raw = _http_direct(url, headers=headers, timeout=timeout)
+        if st == 200 and raw:
+            j = jloads(raw)
+            if isinstance(j, dict) and j.get("code") == "0000":
+                return j.get("data")
+            # 版本过期等场景: 重置 device id 再试
+            if isinstance(j, dict) and j.get("code") in ("0001",):
+                global _RR_DID
+                _RR_DID = _hexid(16)
+        time.sleep(0.4)
+    return None
+
+
+# ------------------------------ rrmj 数据适配 ------------------------------
+def _rr_vod(it):
+    """榜单/首页条目 -> TVBox vod"""
+    did = it.get("dramaId") or it.get("id")
+    if not did:
+        return None
+    title = it.get("title") or it.get("name") or ""
+    cover = it.get("cover") or it.get("coverUrl") or it.get("cover3Url") or ""
+    if isinstance(cover, list) and cover:
+        cover = cover[0]
+    remark = []
+    yr = str(it.get("year") or "")
+    if yr:
+        remark.append(yr)
+    sc = it.get("score")
+    if sc:
+        try:
+            if float(sc) > 0:
+                remark.append(str(sc))
+        except Exception:
+            pass
+    tot = it.get("total") or it.get("episodeCount") or it.get("count")
+    if tot:
+        remark.append("全%s集" % tot if str(tot).isdigit() else str(tot))
+    corner = it.get("cornerMark")
+    if corner:
+        remark.append(str(corner))
+    return {"vod_id": "rr_" + str(did),
+            "vod_name": title or ("剧集" + str(did)),
+            "vod_pic": cover,
+            "vod_remarks": " ".join(remark) or "高清"}
+
+
+def _rr_vod_from_search(it):
+    """搜索结果条目 (fuzzySeasonList 元素) -> TVBox vod"""
+    did = it.get("id") or it.get("dramaId")
+    if not did:
+        return None
+    remark = []
+    for k in ("year",):
+        v = str(it.get(k) or "")
+        if v:
+            remark.append(v)
+    if it.get("score"):
+        try:
+            if float(it.get("score")) > 0:
+                remark.append(str(it.get("score")))
+        except Exception:
+            pass
+    fee = it.get("feeMode")
+    if fee == "vip":
+        remark.append("VIP")
+    cls = it.get("classify")
+    if cls:
+        remark.append(str(cls))
+    return {"vod_id": "rr_" + str(did),
+            "vod_name": it.get("title") or "",
+            "vod_pic": it.get("cover") or "",
+            "vod_remarks": " ".join(remark) or "高清"}
+
+
+# ------------------------------ rrmj 在线接口 ------------------------------
+def rr_home_hot():
+    """首页 sections 里的剧集 (全站热播/近期开播新剧/近期上线电影)"""
+    d = rr_get("/m-station/app/page", {})
+    if not isinstance(d, dict):
+        return []
+    out, seen = [], set()
+    for sec in (d.get("sections") or []):
+        for c in (sec.get("sectionContents") or []):
+            did = c.get("dramaId")
+            if did and str(did) not in seen:
+                seen.add(str(did))
+                v = _rr_vod(c)
+                if v:
+                    out.append(v)
+    return out
+
+
+def rr_rank_list(top_id, page, size=20):
+    """榜单分页列表"""
+    d = rr_get("/m-station/top/drama/list",
+               {"topId": str(top_id), "pageNum": str(page), "pageSize": str(size)})
+    if not isinstance(d, dict):
+        return None
+    content = d.get("content") or []
+    return {"list": [v for v in (_rr_vod(c) for c in content) if v],
+            "total": int(d.get("total") or 0),
+            "isEnd": bool(d.get("isEnd"))}
+
+
+def rr_search(kw, size=20):
+    """在线搜索 (fuzzySeasonList 为主, seasonList 精确匹配在前)"""
+    d = rr_get("/search/comprehensive/precise-mixed",
+               {"keywords": kw, "size": str(size)})
+    if not isinstance(d, dict):
+        return []
+    out, seen = [], set()
+
+    def _add(items):
+        for it in items:
+            v = _rr_vod_from_search(it)
+            if v and v["vod_name"] and v["vod_id"] not in seen:
+                seen.add(v["vod_id"])
+                out.append(v)
+
+    _add(d.get("seasonList") or [])      # 精确匹配
+    _add(d.get("fuzzySeasonList") or [])  # 模糊匹配
+    # 系列剧: 展开 seasonList (各季)
+    for ser in (d.get("seriesList") or []):
+        for se in (ser.get("seasonList") or []):
+            v = _rr_vod_from_search({
+                "id": se.get("id"), "title": "%s 第%d季" % (ser.get("name") or "", se.get("seasonNo") or 1),
+                "cover": se.get("coverUrl"), "year": "", "score": se.get("score"),
+                "feeMode": se.get("feeMode"), "classify": DRAMA_TYPE_NAME.get(se.get("dramaType"), ""),
+            })
+            if v and v["vod_id"] not in seen:
+                seen.add(v["vod_id"])
+                out.append(v)
+    return out
+
+
+def rr_detail(drama_id):
+    """rrmj 详情 + 剧集列表"""
+    d = rr_get("/drama/detail", {"dramaId": str(drama_id), "isAgeLimit": "0"})
+    if not isinstance(d, dict):
+        return None
+    info = d.get("dramaInfo") or {}
+    eps = d.get("episodeList") or []
+    return {"info": info, "episodes": eps,
+            "title": info.get("title") or d.get("title") or "",
+            "intro": info.get("description") or d.get("description") or "",
+            "cover": info.get("cover") or d.get("cover") or "",
+            "type": info.get("dramaType") or d.get("dramaType") or "",
+            "year": info.get("year") or d.get("year") or "",
+            "area": info.get("producerRegion") or d.get("producerRegion") or "",
+            "score": info.get("score") or d.get("score") or "",
+            "playRestricted": d.get("playRestricted") or info.get("playRestricted") or 0}
+
+
+def rr_play(drama_id, episode_sid):
+    """rrmj 取播放直链 (明文 mp4)。
+    实测: ali-cdn-video.rrtv.vip 主机稳定(206 OK);
+          qn-302-cdn-local.rrtv.vip 在国内网络经常超时/460。
+    所以多取几次直到拿到 ali 主机的链接 (服务端随机分配)。"""
+    last = ""
+    for _ in range(6):
+        d = rr_get("/drama/detail",
+                   {"dramaId": str(drama_id), "isAgeLimit": "0",
+                    "episodeSid": str(episode_sid)})
+        if not isinstance(d, dict):
+            time.sleep(0.3)
+            continue
+        wi = d.get("watchInfo") or {}
+        url = ((wi.get("m3u8") or {}).get("url") or "").strip()
+        if url.startswith("http"):
+            if "ali-cdn-video" in url:
+                return url
+            last = url
+        time.sleep(0.2)
+    return last
+
+
+# ============================== smyyds 离线链 ==============================
 _token = None
 _machine = None
 
@@ -164,7 +486,6 @@ def server_time():
 
 
 def get_token():
-    """注册匿名设备 -> 登录取 token (进程内缓存)"""
     global _token, _machine
     if _token:
         return _token
@@ -186,21 +507,20 @@ def get_token():
     return ""
 
 
-# ---------------- 内容 API (cms 主机) ----------------
-def cms_post(path, retry=3):
-    """cms 偶发超时/空响应, 重试几次"""
+def cms_post(path, retry=3, timeout=20):
     for i in range(retry):
         fields = {"time": str(int(time.time())), "key": _hexid(20),
                   "data": SMTV_DATA, "os": "32", "sign": SMTV_SIGN}
-        j = jloads(post_form(HOST_CMS, path, fields, scheme="https"))
+        j = jloads(post_form(HOST_CMS, path, fields, scheme="https", timeout=timeout))
         if j:
             return j
         time.sleep(0.8 * (i + 1))
     return None
 
 
-def detail_api(vid):
-    return cms_post("/api.php/smtv/vod/?ac=detail&ids=%s" % vid)
+def detail_api(vid, timeout=20, retry=3):
+    return cms_post("/api.php/smtv/vod/?ac=detail&ids=%s" % vid,
+                    retry=retry, timeout=timeout)
 
 
 def resolve_play(co_id, vod_name=""):
@@ -221,19 +541,16 @@ def resolve_play(co_id, vod_name=""):
     return ""
 
 
-# ---------------- 片库 ----------------
+# ============================== 离线片库 ==============================
 _library = []
 LIB_URLS = [
     "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao_library.json",
 ]
 
-
-# 最后兜底: 片库 URL/本地文件全部拉不到时用的内置种子 (34 条, 保证界面不空白)
-SEED_JSON = r'''[{"id":344497,"t":"外八门之雪域魔窟","p":"https://m.ykimg.com/050E40005A5C3B76AD881A0664070330","c":"DIANYING","y":"2016"},{"id":343860,"t":"孤独的女人","p":"https://m.ykimg.com/050E00006276354E13F7FF0987889B4E","c":"DIANYING","y":"1964"},{"id":343746,"t":"十二生肖：世界末日的迹象","p":"https://m.ykimg.com/050E0000629466021FD852090BA34E65","c":"DIANYING","y":"2019"},{"id":343691,"t":"胜者为王之拳王阿里","p":"https://m.ykimg.com/050E40005BDA902CADA7B2844D0CAE3F","c":"DIANYING","y":"2020"},{"id":343209,"t":"夺国宝","p":"https://m.ykimg.com/050E00006347E86213EB6609DEFF06B0","c":"DIANYING","y":"1926"},{"id":343962,"t":"大路上","p":"https://m.ykimg.com/050E00006555A77213EBC61B340C681B","c":"DIANSHIJU","y":"2024"},{"id":342905,"t":"大红灯笼高高挂","p":"https://m.ykimg.com/050E0000692041CA140C6E143C4644A2","c":"DIANSHIJU","y":"2025"},{"id":340690,"t":"外来媳妇本地郎2","p":"https://m.ykimg.com/050E00006040A81C2027EE08A655DD0F","c":"DIANSHIJU","y":"2018"},{"id":333339,"t":"寒门状元","p":"http://0img.hitv.com/preview/sp_images/2026/04/09/202604091730000045191.jpg","c":"DIANSHIJU","y":"2025"},{"id":333240,"t":"我是你的白月光","p":"https://pic2.iqiyipic.com/image/20260416/96/e4/a_100801103_m_601_579_772.jpg","c":"DIANSHIJU","y":"2026"},{"id":342108,"t":"Ciao翘圣诞1","p":"https://m.ykimg.com/050E00005DEF4CF41B769111BB083761","c":"ZONGYI","y":"2017"},{"id":335767,"t":"美女天黑请闭眼1","p":"http://m.ykimg.com/053400005DEF7431859B5E3EE10F353E","c":"ZONGYI","y":"2017"},{"id":335704,"t":"Uta奇奇怪怪的开箱好物分享推荐1","p":"http://m.ykimg.com/053440005A17D421AD881A03890E6DFE","c":"ZONGYI","y":"2017"},{"id":335651,"t":"渣男日记2016","p":"http://m.ykimg.com/0534400059AD7F9E859B5C03040A542C","c":"ZONGYI","y":"2016"},{"id":335110,"t":"湾湾说2016","p":"http://m.ykimg.com/0534400059BAAE01AD881A03060A0746","c":"ZONGYI","y":"2016"},{"id":344638,"t":"我靠投诉开挂，成为了仙魔之主","p":"https://m.ykimg.com/050E0000698B0B346A22BF1D50971851","c":"DONGMAN","y":"2026"},{"id":344511,"t":"胆大党日语版","p":"https://vcover-vt-pic.puui.qpic.cn/vcover_vt_pic/0/mzc00200od022281727703266627/0","c":"DONGMAN","y":"2024"},{"id":344466,"t":"异变胖虎","p":"https://m.ykimg.com/050E00005729A660000000195504CDFC","c":"DONGMAN","y":"2026"},{"id":344250,"t":"丽莎的假期生活","p":"https://m.ykimg.com/050E00005729A660000000195504CDFC","c":"DONGMAN","y":"2025"},{"id":344097,"t":"冷君离","p":"https://m.ykimg.com/050E00006A0ADE2FC876E113C6A76401","c":"DONGMAN","y":"2026"},{"id":344573,"t":"东方娃娃幼儿大科学：海狮，大海里的“狮子”","p":"https://m.ykimg.com/050E000069F03292140C6E14325B0E7B","c":"SHAOER","y":"2026"},{"id":344415,"t":"东方娃娃幼儿大科学：森林里的发明家黑猩猩","p":"https://m.ykimg.com/050E000069F0307B7B519713B444CC96","c":"SHAOER","y":"2026"},{"id":343657,"t":"囡囡玩具生活","p":"https://m.ykimg.com/050E00005729A660000000195504CDFC","c":"SHAOER","y":"2025"},{"id":343414,"t":"睡前小耳朵宝宝听故事","p":"https://m.ykimg.com/050E000069F1C0C8C54E4912FD46F759","c":"SHAOER","y":"2026"},{"id":342800,"t":"福尔摩斯与华生名侦探的宝藏","p":"https://m.ykimg.com/050E0000693A20DB051E9D150E59490E","c":"SHAOER","y":"2026"},{"id":344604,"t":"一学就会的阳宅风水课","p":"https://m.ykimg.com/050E00006863AE14203CC7114E1782E4","c":"JILUPIAN","y":"2025"},{"id":344353,"t":"《小野田的丛林万夜》解读原型人物小野田宽郎","p":"https://m.ykimg.com/050E0000670A614B7B50BB1489129403","c":"JILUPIAN","y":"2024"},{"id":344340,"t":"奇幻冒险：害虫与益虫的战斗","p":"https://m.ykimg.com/050E00006736B251C7BFE9128B979594","c":"JILUPIAN","y":"2024"},{"id":344337,"t":"南极的眼泪","p":"https://m.ykimg.com/050E00005D80B0D142659322A27DE95B","c":"JILUPIAN","y":"2019"},{"id":344023,"t":"讲法记录说","p":"https://m.ykimg.com/050E000061F25D372037DD0937F75483","c":"JILUPIAN","y":"2022"},{"id":344716,"t":"飞鸟藏爱","p":"https://ju-oss-5g.maqq.cn/ju-pic/kokbksxdnrnunonokbkakikhkukoxdkckokm/upload/movie/20260512/vod38211979.webp","c":"WAIJU","y":"2026"},{"id":344421,"t":"无耻之徒美版8","p":"https://ju-oss-5g.maqq.cn/ju-pic/kokbksxdnrnunonokbkakikhkukoxdkckokm/upload/movie/20240829/vod26938395.webp","c":"WAIJU","y":"2017"},{"id":344178,"t":"摩登家庭7","p":"https://ju-oss-5g.maqq.cn/ju-pic/kokbksxdnrnunonokbkakikhkukoxdkckokm/upload/movie/20240905/vod26385630.webp","c":"WAIJU","y":"2015"},{"id":342987,"t":"夜魔侠：重生1","p":"https://ju-oss-5g.maqq.cn/ju-pic/kokbksxdnrnunonokbkakikhkukoxdkckokm/upload/vod/20250905-1/420232cca3287bb4b5f8775c733e193a.webp","c":"WAIJU","y":"2025"},{"id":342958,"t":"爱冲云霄","p":"https://ju-oss-5g.maqq.cn/ju-pic/kokbksxdnrnunonokbkakikhkukoxdkckokm/upload/movie/20260530/vod37134254.webp","c":"WAIJU","y":"2026"}]'''
+SEED_JSON = r'''[{"id":344497,"t":"外八门之雪域魔窟","p":"https://m.ykimg.com/050E40005A5C3B76AD881A0664070330","c":"DIANYING","y":"2016"}]'''
 
 
 def _norm(v):
-    """兼容新(紧凑)/旧(完整)两种字段名"""
     return {"id": v.get("id"),
             "title": v.get("t") or v.get("title") or "",
             "pic": v.get("p") or v.get("pic") or "",
@@ -245,13 +562,11 @@ def _norm(v):
 def load_library(src):
     global _library
     src = (src or "").strip()
-    # 情况 A: 宿主已把 ext 指向的文件内容取回并直接传进来
     if src[:1] in ("[", "{"):
         d = jloads(src.encode("utf-8", "replace"))
         if isinstance(d, list) and d:
             _library = [_norm(v) for v in d if v.get("id")]
             return _library
-    # 情况 B: ext 是 URL / 本地文件名 (可用 ; 分隔多个备选)
     cands = [s.strip() for s in src.split(";") if s.strip()] if src else []
     cands += ["yemao_library.json", "library.json"] + LIB_URLS
     for c in cands:
@@ -274,7 +589,7 @@ def load_library(src):
     return _library
 
 
-def _vod(v):
+def _lib_vod(v):
     return {"vod_id": str(v["id"]),
             "vod_name": v["title"] or ("片源" + str(v["id"])),
             "vod_pic": v["pic"],
@@ -282,9 +597,8 @@ def _vod(v):
 
 
 def build_filters():
-    """按片库实际年份动态生成筛选项 (只保留有内容的年份)"""
     out = {}
-    for c in CLASSES:
+    for c in OFF_CLASSES:
         tid = c["type_id"]
         ys = sorted({str(v["year"]) for v in _library
                      if v["type"] == tid and str(v["year"]).isdigit()
@@ -293,12 +607,20 @@ def build_filters():
             continue
         out[tid] = [{"key": "year", "name": "年份",
                      "value": [{"n": "全部", "v": ""}] +
-                              [{"n": y, "v": y} for y in ys[:16]]}]
+                               [{"n": y, "v": y} for y in ys[:16]]}]
+    # rrmj 榜单子分类筛选
+    for r in RANKS:
+        tid = r["type_id"]
+        subs = RANK_SUBS.get(tid) or []
+        if len(subs) > 1:
+            out[tid] = [{"key": "sub", "name": "分类",
+                         "value": [{"n": n, "v": str(i)} for n, i in subs]}]
     return out
 
 
-# ---------------- Spider 接口 ----------------
+# ============================== Spider 接口 ==============================
 class Spider(Spider):
+
     def getName(self):
         return "夜猫4K"
 
@@ -321,27 +643,48 @@ class Spider(Spider):
     def destroy(self):
         return ""
 
+    # ---------------- 首页 ----------------
     def homeContent(self, filter):
-        hot = []
-        for c in CLASSES:
-            n = 0
-            for v in _library:
-                if v["type"] == c["type_id"]:
-                    hot.append(_vod(v))
-                    n += 1
-                    if n >= 6:
-                        break
-        return {"class": CLASSES, "filters": build_filters(), "list": hot}
+        hot = rr_home_hot()[:24]     # rrmj 在线首页 (与 App 同步)
+        if not hot:
+            # rrmj 不可用时: 用热播榜 + 离线库前 24 条兜底
+            r = rr_rank_list(9, 1)
+            hot = (r or {}).get("list") or []
+            if not hot:
+                hot = [_lib_vod(v) for v in _library[:24]]
+        classes = [{"type_id": "home", "type_name": "首页"}] + RANKS + OFF_CLASSES
+        return {"class": classes, "filters": build_filters(), "list": hot}
 
     def homeVideoContent(self):
-        return {"list": [_vod(v) for v in _library[:40]]}
+        hot = rr_home_hot()[:40]
+        if not hot:
+            r = rr_rank_list(9, 1)
+            hot = (r or {}).get("list") or []
+        if not hot:
+            hot = [_lib_vod(v) for v in _library[:40]]
+        return {"list": hot}
 
+    # ---------------- 分类页 ----------------
     def categoryContent(self, tid, pg, filter, extend):
         try:
             pg = int(pg or 1)
         except Exception:
             pg = 1
         ext = extend if isinstance(extend, dict) else {}
+
+        # rrmj 榜单
+        if tid.startswith("rank_"):
+            subs = RANK_SUBS.get(tid) or [("全部", int(tid[5:]))]
+            sub_id = ext.get("sub")
+            top_id = int(sub_id) if sub_id else subs[0][1]
+            r = rr_rank_list(top_id, pg, size=20)
+            if r:
+                pagecount = max(1, (r["total"] + 19) // 20)
+                return {"page": pg, "pagecount": pagecount,
+                        "limit": 20, "total": r["total"], "list": r["list"]}
+            return {"page": pg, "pagecount": 1, "limit": 20, "total": 0, "list": []}
+
+        # 离线库分类 (DIANYING 等)
         year = str(ext.get("year") or "").strip()
         items = [v for v in _library if not tid or v["type"] == tid]
         if year:
@@ -349,10 +692,72 @@ class Spider(Spider):
         page = items[(pg - 1) * 24: pg * 24]
         total = len(items)
         return {"page": pg, "pagecount": max(1, (total + 23) // 24),
-                "limit": 24, "total": total, "list": [_vod(v) for v in page]}
+                "limit": 24, "total": total, "list": [_lib_vod(v) for v in page]}
 
+    # ---------------- 详情 ----------------
     def detailContent(self, ids):
         vid = str(ids[0] if isinstance(ids, list) else ids).split(",")[0].strip()
+        # rrmj 在线条目
+        if vid.startswith("rr_"):
+            return self._rr_detail(vid[3:])
+        # 离线条目
+        return self._lib_detail(vid)
+
+    def _rr_detail(self, drama_id):
+        d = rr_detail(drama_id)
+        if not d or not d.get("title"):
+            return {"list": [{"vod_id": "rr_" + str(drama_id),
+                              "vod_name": "加载失败, 请重试",
+                              "vod_play_from": "夜猫4K",
+                              "vod_play_url": "重试$0"}]}
+        info, eps = d["info"], d["episodes"]
+        arr = []
+        for e in eps:
+            t = (e.get("text") or e.get("title") or e.get("episodeName") or "").replace("$", "").replace("#", "")
+            sid = e.get("sid")
+            if sid:
+                arr.append("%s$rrplay_%s_%s" % (t or ("第%s集" % e.get("episodeNo", len(arr) + 1)),
+                                                drama_id, sid))
+        if not arr:
+            # 无剧集 (下架/区域限制): 提示而不是报错
+            return {"list": [{"vod_id": "rr_" + str(drama_id),
+                              "vod_name": d.get("title"),
+                              "vod_pic": d.get("cover") or "",
+                              "type_name": DRAMA_TYPE_NAME.get(d.get("type"), ""),
+                              "vod_remarks": "暂无片源",
+                              "vod_content": (d.get("intro") or "").strip() + "\n\n该内容暂无可播剧集(可能已下架或区域限制)",
+                              "vod_play_from": "人人视频",
+                              "vod_play_url": "暂无片源$0"}]}
+        # vip 剧给提示
+        fee = info.get("feeMode") or ""
+        intro = (d.get("intro") or "").strip()
+        if fee == "vip":
+            intro = ("【免费可看高清(480P), 超清及以上需官方VIP】\n" + intro).strip()
+        type_name = DRAMA_TYPE_NAME.get(d.get("type"), d.get("type") or "")
+        remark = []
+        if d.get("year"):
+            remark.append(str(d["year"]))
+        if d.get("score"):
+            remark.append(str(d["score"]))
+        if info.get("totalEpisode"):
+            remark.append("全%s集" % info.get("totalEpisode"))
+        play_url = "#".join(arr) if arr else "暂无片源$0"
+        return {"list": [{
+            "vod_id": "rr_" + str(drama_id),
+            "vod_name": d.get("title") or ("剧集" + str(drama_id)),
+            "vod_pic": d.get("cover") or "",
+            "type_name": type_name,
+            "vod_year": str(d.get("year") or ""),
+            "vod_area": str(d.get("area") or ""),
+            "vod_actor": ", ".join(info.get("actorList") or []) if isinstance(info.get("actorList"), list) else str(info.get("actorList") or ""),
+            "vod_director": str(info.get("director") or ""),
+            "vod_remarks": " ".join(remark) or "高清",
+            "vod_content": intro,
+            "vod_play_from": "人人视频",
+            "vod_play_url": play_url,
+        }]}
+
+    def _lib_detail(self, vid):
         j = detail_api(vid)
         if not isinstance(j, dict) or not j.get("title"):
             v = next((x for x in _library if str(x["id"]) == vid), None)
@@ -374,7 +779,6 @@ class Spider(Spider):
                     if f:
                         flags.append(f)
             if arr:
-                # 该线路全是同一家 vip 网页地址 -> 线路名用标准 flag, 让 TVBox 走 parses
                 nm = (src.get("name") or "线路").replace("$", "")
                 if flags and len(set(flags)) == 1 and len(flags) == len(arr):
                     nm = flags[0]
@@ -397,34 +801,103 @@ class Spider(Spider):
             "vod_play_url": "$$$".join(urls),
         }]}
 
+    # ---------------- 搜索 ----------------
     def searchContent(self, key, quick, pg="1"):
         key = (key or "").strip()
         if not key:
             return {"list": []}
+        # rrmj 在线搜索 (与 App 同步)
+        out = rr_search(key, size=20)
+        if out:
+            return {"list": out}
+        # 兜底: 离线库搜索
         kl = key.lower().replace(" ", "")
-        out = []
+        lib_out = []
         for v in _library:
             t = (v["title"] or "")
             if kl in t.lower().replace(" ", ""):
-                out.append(_vod(v))
-                if len(out) >= 40:
+                lib_out.append(_lib_vod(v))
+                if len(lib_out) >= 40:
                     break
-        return {"list": out}
+        return {"list": lib_out}
 
+    # ---------------- 播放 ----------------
     def playerContent(self, flag, id, vipFlags):
         pid = str(id or "")
-        # co_xxx: 走夜猫自家接口拿直链, parse=0 直接播
+        # rrmj 在线播放: rrplay_{dramaId}_{sid}
+        if pid.startswith("rrplay_"):
+            parts = pid[len("rrplay_"):].split("_")
+            if len(parts) >= 2:
+                url = rr_play(parts[0], parts[1])
+                if url:
+                    return {"parse": 0, "playUrl": "", "url": url,
+                            "header": {"User-Agent": RR_UA}}
+            return {"parse": 0, "playUrl": "", "url": "", "header": {}}
+        # 离线链: co_xxx 走夜猫自家接口拿直链
         if pid.startswith("co_"):
             url = resolve_play(pid, "")
             if url:
-                return {"parse": 0, "playUrl": "", "url": url, "header": {"User-Agent": WEB_UA}}
+                return {"parse": 0, "playUrl": "", "url": url,
+                        "header": {"User-Agent": WEB_UA}}
             return {"parse": 0, "playUrl": "", "url": "", "header": {}}
         # 各大站网页地址: 交给 TVBox 配置里的 parses 解析 (parse=1)
         if pid.startswith("http"):
             if vip_flag(pid):
                 return {"parse": 1, "playUrl": "", "url": pid, "header": {}}
-            return {"parse": 0, "playUrl": "", "url": pid, "header": {"User-Agent": WEB_UA}}
+            return {"parse": 0, "playUrl": "", "url": pid,
+                    "header": {"User-Agent": WEB_UA}}
         return {"parse": 0, "playUrl": "", "url": "", "header": {}}
 
     def localProxy(self, param):
         return [200, "text/plain", {}, ""]
+
+
+# ============================== 自测入口 ==============================
+if __name__ == "__main__":
+    s = Spider()
+    s.init("")
+    print("== homeContent ==")
+    home = s.homeContent(True)
+    print("classes:", [c["type_name"] for c in home["class"]])
+    print("hot items:", len(home.get("list") or []))
+    for v in (home.get("list") or [])[:5]:
+        print("  -", v["vod_id"], v["vod_name"], v["vod_remarks"])
+
+    print()
+    print("== categoryContent rank_9 (热播榜) ==")
+    cat = s.categoryContent("rank_9", 1, None, {})
+    print("total:", cat.get("total"), "items:", len(cat.get("list") or []))
+    for v in (cat.get("list") or [])[:5]:
+        print("  -", v["vod_id"], v["vod_name"], v["vod_remarks"])
+
+    print()
+    print("== searchContent 老友记 ==")
+    sr = s.searchContent("老友记", False)
+    print("items:", len(sr.get("list") or []))
+    for v in (sr.get("list") or [])[:5]:
+        print("  -", v["vod_id"], v["vod_name"], v["vod_remarks"])
+
+    print()
+    print("== detail + play 链路 (取热播榜第一个 rr_ 条目) ==")
+    first_rr = next((v["vod_id"] for v in (cat.get("list") or []) if v["vod_id"].startswith("rr_")), None)
+    if not first_rr:
+        first_rr = next((v["vod_id"] for v in (home.get("list") or []) if v["vod_id"].startswith("rr_")), None)
+    if first_rr:
+        did = first_rr[3:]
+        det = s.detailContent([first_rr])
+        v0 = (det.get("list") or [{}])[0]
+        print("title:", v0.get("vod_name"), "| type:", v0.get("type_name"), "| year:", v0.get("vod_year"))
+        print("play_from:", v0.get("vod_play_from"))
+        pu = (v0.get("vod_play_url") or "").split("#")
+        print("episodes:", len(pu))
+        if pu and pu[0] and "$" in pu[0]:
+            ep1_name, ep1_id = pu[0].split("$", 1)
+            print("ep1:", ep1_name, "->", ep1_id)
+            pc = s.playerContent("人人视频", ep1_id, None)
+            url = pc.get("url") or ""
+            print("play url:", url[:100] or "(空)")
+            if url:
+                st, raw = _http_direct(url, headers={"User-Agent": RR_UA, "Range": "bytes=0-1023"})
+                print("probe:", st, "bytes:", len(raw), "box:", raw[4:8] if len(raw) > 12 else b"")
+    print()
+    print("ALL DONE")
