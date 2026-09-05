@@ -255,15 +255,10 @@
       "timeout": 120
     },
     {
-      "key": "AppV7Zjdr",
-      "name": "🎬追剧达人[影视]",
+       "key": "夜猫",
+      "name": "夜猫",
       "type": 3,
-      "api": "csp_AppV7",
-      "jar": "https://dogpan.com/f/LgR2FQ/20260730190959spider.jar",
-      "quickSearch": 1,
-      "searchable": 1,
-      "changeable": 0,
-      "ext": "AIBOX1/cXJzdHV2d3h5ent8fX5/gJSHXACxiaOhlDsHGFhMei7uBEcMV/8APssxKMcTkX2C3+yfmI5ZDE4A9o73v30sjn+L00OtCnNnZcsVcFpa3ugN6owt/zdz+eeDJnIMC9xwq8gNI1q9J1GMSfDzWNFGdsbkqEB4sgZ+mkrygmAVO2CQptqU2ziGiqXlXSBkVutpsVrLzDzZ3xczQ9aHgW61cQ=="
+      "api": "https://dogpan.com/f/y8VXtL/%E5%A4%9C%E7%8C%AB4K.py"
     },
     {
       "key": "剧ok",
