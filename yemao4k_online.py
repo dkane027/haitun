@@ -553,13 +553,9 @@ class Spider(Spider):
                 u = e.get("url") or ""
                 if not u:
                     continue
-                # 外剧(rrmj网页 m.yichengwlkj.com/drama/did?episodeNo=n) -> 走 rrmj 直链
-                mj = re.search(r"/drama/(\d+)(?:\?[^ ]*episodeNo=(\d+))?", u)
-                if mj and ("yichengwlkj" in u or "rrmj" in u):
-                    did = mj.group(1)
-                    epn = mj.group(2) or "1"
-                    arr.append("%s$xrr_%s_%s" % (t or ("第%d集" % (len(arr) + 1)), did, epn))
-                    continue
+                # 所有线路 (含外剧 rrmj 网页) 统一走 mf /Client/ 解析:
+                # App 外剧真实链路 = 把 m.yichengwlkj.com 网页地址交 Client line=rrmj 解析,
+                # 直链带授权可免登录播放; 直接调 rrmj API 拿的 mp4 无授权会提示登录。
                 arr.append("%s$xmp_%s_%s" % (t or ("第%d集" % (len(arr) + 1)), vid,
                                              urllib.parse.quote(u, safe="")))
             if arr:
