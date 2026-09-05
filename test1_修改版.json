@@ -28,17 +28,16 @@
       "changeable": 0,
       "ext": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao_library.json"
     },
-   {
-  "key": "AppGLGL",
-  "name": "普通影视|咕噜",
-  "type": 3,
-  "api": "csp_App99",
-  "searchable": 1,
-  "quickSearch": 0,
-  "filterable": 0,
-  "ext": "w6/ClsOAw4rDosKWe8KVwrFbwq7Cj8KUw4jDmsKYwpxXZFTCm8OTw5LDhMOgwqrCoMKkwoPCmcOtwpbCp8KBwpViY2BpZcKpwqXCpcKUwp5nV8Kt",
-  "jar": "http://47.93.215.151/ssvip/jar/13011568306"
-},
+{
+      "key": "咕噜",
+      "name": "咕噜",
+      "type": 3,
+      "api": "https://dogpan.com/f/Y6g6IA/gl.py",
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
+    },,
     {
       "key": "py_aigua",
       "name": "爱瓜TV(T3)",
