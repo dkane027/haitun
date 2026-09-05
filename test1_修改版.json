@@ -21,12 +21,11 @@
       "key": "yemao4k",
       "name": "🐈夜猫4K",
       "type": 3,
-      "api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao4k.py",
+      "api": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao4k_online.py",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
       "changeable": 0,
-      "ext": "https://raw.githubusercontent.com/dkane027/haitun/refs/heads/main/yemao_library.json"
     },
 {
       "key": "咕噜",
