@@ -97,16 +97,7 @@
       "quickSearch": 1,
       "filterable": 0
     },
-    {
-      "key": "可可",
-      "name": "可可",
-      "type": 3,
-      "api": "https://dogpan.com/f/6635Sy/kkys.py",
-      "changeable": 0,
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0
-    },
+   
     {
       "key": "zip0.py",
       "name": "zip0.py",
@@ -147,7 +138,7 @@
       "filterable": 0,
       "changeable": 1,
       "jar": "https://img.tofaka.com/autoupload/f/v78ve/20260811/DYCa/aidaox-20260811-162723.jar",
-      "ext": "https://cz01.vip"
+      "ext": "https://www.4kcz.com"
     },
     {
       "key": "4KVM.py",
