@@ -98,54 +98,11 @@
       "filterable": 0
     },
     {
-      "key": "新瓜子影视",
-      "name": "踏天苍穹4k❤️聚子",
+      "key": "可可",
+      "name": "可可",
       "type": 3,
-      "api": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/%E4%BA%91%E5%AD%90.py",
-      "jar": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/jar/yunh0716.jar",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0,
-      "AES_KEY": "OITxa5OqAYjhswxx",
-      "AES_IV": "rCMNwZASNBKZ8mXV",
-      "code": "GZ0369"
-    },
-    {
-      "key": "4k-av",
-      "name": "踏天苍穹4k❤️电信",
-      "type": 3,
-      "api": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/21.py",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0
-    },
-    {
-      "key": "新腾极4k",
-      "name": "踏天中原4k-双煞🔥",
-      "type": 3,
-      "api": "http://wang.qijiyun.vip/yun2k/drpy_libs/drpy2.min.js",
-      "ext": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/4k%E8%B8%8F%E5%A4%A9s2TX.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0
-    },
-    {
-      "key": "真轱辘",
-      "name": "踏天苍穹4k❤️归墟",
-      "type": 3,
-      "api": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/lib/%E5%92%95%E5%99%9C.js",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0
-    },
-    {
-      "key": "柠檬",
-      "name": "踏天苍穹4k❤️萌",
-      "type": 3,
-      "api": "csp_Nmvod",
-      "playerType": 2,
-      "jar": "http://8.148.229.212:802/4k%E8%B8%8F%E5%A4%A9s2/jar/%E6%9F%A0%E6%AA%AC.jar",
-      "ext": "7lj763gg402i7942503g839jg74h8h88highi40799jh6i6k454419l0l5184k0g549h0kg2i01i838i2h42g891lgg1",
+      "api": "https://dogpan.com/f/6635Sy/kkys.py",
+      "changeable": 0,
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0
