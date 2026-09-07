@@ -1,0 +1,72 @@
+{
+  "sites": [
+    {
+      "key": "csp_AiYiFan2",
+      "name": "🚀┃国内-爱壹帆┃",
+      "type": 3,
+      "api": "csp_AiYiFan2",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "csp_AiYiFan1",
+      "name": "🐼┃海外-爱壹帆┃",
+      "type": 3,
+      "api": "csp_AiYiFan1",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "csp_OLe",
+      "name": "🐷┃海外-欧乐资源┃",
+      "type": 3,
+      "api": "csp_OLe",
+      "searchable": 0,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "csp_Yongle",
+      "name": "🍄┃永乐资源┃",
+      "type": 3,
+      "api": "csp_Yongle",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "66zy",
+      "name": "🐼┃电影天堂┃",
+      "type": 1,
+      "api": "https://caiji.dyttzyapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "categories": [
+        "国产剧",
+        "韩国剧",
+        "大陆综艺",
+        "香港剧",
+        "台湾剧",
+        "欧美剧",
+        "动作片",
+        "科幻片",
+        "战争片",
+        "奇幻片",
+        "喜剧片",
+        "爱情片",
+        "恐怖片",
+        "犯罪片",
+        "悬疑片",
+        "惊悚片",
+        "剧情片",
+        "冒险片",
+        "综艺",
+        "日韩动漫",
+        "国产动漫"
+      ]
+    }
+  ],
+  "spider": "http://tv.xiaobaibox.com/jar/bai1.6_spider.jar;md5;E0C92F27999DD969A31709E7561A7EE789F"
+}
