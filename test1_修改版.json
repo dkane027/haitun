@@ -17,6 +17,16 @@
         "page_size": 21
       }
     },
+     {
+      "key": "华宜直播",
+      "name": "华宜直播",
+      "type": 3,
+      "api": "https://dogpan.com/f/xGY2cx/huayi_live.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 0
+    },
     {
       "key": "yemao4k",
       "name": "🐈夜猫4K",
