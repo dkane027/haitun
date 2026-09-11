@@ -79,6 +79,16 @@
         "decrypt": "1"
       }
     },
+ {
+      "key": "猎手4k",
+      "name": "猎手4k",
+      "type": 3,
+      "api": "https://dogpan.com/f/DRGJH3/%E7%8C%8E%E6%89%8B.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
+    },
+    
     {
       "key": "荐片",
       "name": "荐片",
