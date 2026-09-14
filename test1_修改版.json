@@ -274,16 +274,7 @@
       "quickSearch": 1,
       "filterable": 0
     },
-    {
-      "key": "souju.py",
-      "name": "souju.py",
-      "type": 3,
-      "api": "https://dogpan.com/f/GZ0EHA/souju.py",
-      "changeable": 0,
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0
-    },
+    
     {
       "key": "zhuiying.py",
       "name": "zhuiying.py",
