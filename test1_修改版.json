@@ -17,7 +17,22 @@
         "page_size": 21
       }
     },
-   
+   {
+  "key": "小霸王",
+  "name": "🎮小霸王[游戏]",
+  "type": 3,
+  "api": "csp_Yikm",
+  "searchable": 1,
+  "quickSearch": 1,
+  "filterable": 1,
+  "changeable": 0,
+  "style": {
+    "type": "rect",
+    "ratio": 0.75
+  },
+  "timeout": 60,
+  "jar": "https://img2.tofaka.com/autoupload/f/p8kvh/20260914/2IA9/aidaox-gongju-20260914-161201.jar;md5;20113bc8f804ffea7e4e93d58d0279cf"
+},
  {
   "key": "xiangcun",
   "name": "乡村电视2",
