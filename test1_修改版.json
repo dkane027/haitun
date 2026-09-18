@@ -20,9 +20,9 @@
    
  {
   "key": "xiangcun",
-  "name": "乡村电视2",
+  "name": "乡村电视3",
   "type": 1,
-  "api": "https://9c74296dd85649b3a03c0d438b3b0374.sg2.agentos-app.run/api.php/provide/vod/",
+  "api": "https://eb321be13be5449e9d208ef5a2f63d6c.sg2.agentos-app.run/api.php/provide/vod/",
   "searchable": 1,
   "quickSearch": 1,
   "filterable": 1,
