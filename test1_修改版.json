@@ -181,15 +181,7 @@
       "quickSearch": 1,
       "filterable": 0
     },
-    {
-      "key": "追光影视",
-      "name": "追光影视",
-      "type": 3,
-      "api": "https://raw.githubusercontent.com/stevenrop/tvbox/refs/heads/main/%E8%BF%BD%E5%85%89%E5%BD%B1%E8%A7%86.py",
-      "quickSearch": 1,
-      "searchable": 1,
-      "filterable": 1
-    },
+   
    
     {
       "key": "剧ok",
