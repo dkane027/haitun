@@ -28,7 +28,16 @@
   "filterable": 1,
   "changeable": 0
 },
-
+{
+      "key": "豆花",
+      "name": "豆花",
+      "type": 3,
+      "api": "https://dogpan.com/f/NxNwFj/%E8%B1%86%E8%8A%B1%E7%94%B5%E5%BD%B1.py",
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
+    },
 {
       "key": "咕噜",
       "name": "咕噜",
