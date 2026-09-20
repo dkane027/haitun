@@ -28,6 +28,16 @@
   "filterable": 1,
   "changeable": 0
 },
+    {
+      "key": "凡客",
+      "name": "凡客",
+      "type": 3,
+      "api": "https://dogpan.com/f/Z43kiQ/%E5%87%A1%E5%AE%A2TV.py",
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
+    },
 {
       "key": "豆花",
       "name": "豆花",
