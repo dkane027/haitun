@@ -18,16 +18,7 @@
       }
     },
    
- {
-  "key": "xiangcun",
-  "name": "乡村电视3",
-  "type": 1,
-  "api": "https://eb321be13be5449e9d208ef5a2f63d6c.sg2.agentos-app.run/api.php/provide/vod/",
-  "searchable": 1,
-  "quickSearch": 1,
-  "filterable": 1,
-  "changeable": 0
-},
+
     {
       "key": "凡客",
       "name": "凡客",
@@ -284,6 +275,16 @@
       "searchable": 1,
       "filterable": 1
     },
+     {
+  "key": "xiangcun",
+  "name": "乡村电视3",
+  "type": 1,
+  "api": "https://eb321be13be5449e9d208ef5a2f63d6c.sg2.agentos-app.run/api.php/provide/vod/",
+  "searchable": 1,
+  "quickSearch": 1,
+  "filterable": 1,
+  "changeable": 0
+},
     {
       "key": "金牌py",
       "name": "金牌py",
