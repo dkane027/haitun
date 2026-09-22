@@ -98,24 +98,7 @@
       "quickSearch": 1,
       "filterable": 0
     },
-     {
-      "key": "青麦",
-      "name": "青麦",
-      "type": 3,
-      "api": "https://dogpan.com/f/58jnu6/%E9%9D%92%E9%BA%A6%E8%A7%86%E9%A2%914K%E7%89%88.py",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0
-    },
-     {
-      "key": "零度",
-      "name": "零度",
-      "type": 3,
-      "api": "https://dogpan.com/f/66k8Cy/%E9%9B%B6%E5%BA%A64K.py",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0
-    },
+    
     {
       "key": "荐片",
       "name": "荐片",
