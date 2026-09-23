@@ -4,6 +4,18 @@
   "playerType": 2,
   "sites": [
     {
+      "key": "看剧ai",
+      "name": "看剧ai",
+      "type": 3,
+      "api": "https://raw.githubusercontent.com/geuclide97/zjys9-py/refs/heads/main/%E7%9C%8B%E5%89%A7AI19.py",
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
+    },
+    
+    
+    {
       "key": "SA视频",
       "name": "🎬SA视频｜秒播",
       "type": 3,
